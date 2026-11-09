@@ -29,17 +29,27 @@ browser ──▶ /api/events, /api/news, /api/gallery ──▶ Facebook Graph 
 netlify/functions/   the API: events, news, gallery, image (each file declares its address)
 netlify/lib/         the functions' code: the Graph API call, which posts count as news, the gallery, the picture
                      passing; types.ts and dates.ts are shared with the page
-public/              files served as they are (the favicon)
+public/              files served as they are (the favicon, the share picture)
 src/images/          pictures the page itself uses (the station sign)
 src/App.tsx          the page: loads the API answers and puts the sections together
 src/sections/        one file per section (»perron«), in page order, plus the header and the footer
 src/components/      parts used by the sections: the departure board, the ticket, the train, the photo viewer, …
-src/lib/             logic without React, with tests: Danish dates, the board, news, texts, the membership form
+src/lib/             logic without React, with tests: Danish dates, the board, news, texts, the membership form,
+                     the site's own address for link previews
 src/content/site.ts  the fixed texts: welcome, volunteers, »Vælg din kupé«, the membership cards, contact details
 src/styles/          the stylesheet, colours first
 index.html           the page's shell
 netlify.toml         Netlify's build settings
 ```
+
+The site that was on kupeen9520.dk before had a page per subject (`/aktiviteter`, `/bliv-medlem`, `/om-os`,
+`/gode-ideer`); `netlify.toml` sends those addresses to the matching section, and the page scrolls to the section
+named after `#` once the lists have loaded.
+
+A shared link shows `public/share-image.jpg` (1200×630) with the title and description from `index.html`. The build
+writes the site's own address into those tags (`src/lib/siteUrl.ts`), so publish once more after the domain changes.
+Facebook keeps a picture by its address: give a new share picture a new file name, then let Facebook's Sharing
+Debugger read the page again.
 
 Dates are always shown in Danish time, whatever the visitor's own time zone. The board drops an event once it is over
 by the visitor's clock (Facebook's end time, or three hours after the start). The photo section only shows when

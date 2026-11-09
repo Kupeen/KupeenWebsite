@@ -9,6 +9,20 @@
     <!-- Until the site goes live on kupeen9520.dk, search engines leave it alone. Remove this line at launch. -->
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- What a shared link shows on Facebook, Messenger and the like. %SITE_URL% is filled in by the build
+         (vite.config.ts). Facebook keeps a picture by its address: a new share picture needs a new file name. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kupéen" />
+    <meta property="og:locale" content="da_DK" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="Velkommen ombord i Kupéen" />
+    <meta property="og:description" content="Kupéen er et lokalt mødested i hjertet af Skørping, drevet af frivillige: koncerter, quiz, strik, brætspil og meget mere på Sverriggårdsvej 3." />
+    <meta property="og:image" content="%SITE_URL%/share-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Velkommen ombord i Kupéen – en afgangstavle med koncert, quiz, strik og brætspil over et togspor. Sverriggårdsvej 3, Skørping." />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>

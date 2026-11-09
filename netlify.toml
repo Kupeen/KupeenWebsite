@@ -19,3 +19,32 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# The site that was on kupeen9520.dk before had one page per subject. Its addresses live on in search results and old
+# posts, so each leads to the matching section of this page (301: moved for good). The page itself scrolls to the
+# section named after the #, see useJumpToSection in src/App.tsx.
+[[redirects]]
+  from = "/aktiviteter"
+  to = "/#aktiviteter"
+  status = 301
+
+# A single event on the old site (/aktiviteter/<id>): its ids are not Facebook's, so it leads to the whole programme.
+[[redirects]]
+  from = "/aktiviteter/*"
+  to = "/#aktiviteter"
+  status = 301
+
+[[redirects]]
+  from = "/bliv-medlem"
+  to = "/#bliv-medlem"
+  status = 301
+
+[[redirects]]
+  from = "/om-os"
+  to = "/#om-os"
+  status = 301
+
+[[redirects]]
+  from = "/gode-ideer"
+  to = "/#gode-ideer"
+  status = 301

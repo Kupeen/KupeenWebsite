@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useEvents, useGallery, useNews, type Loaded } from "./api";
 import { LightboxProvider } from "./components/Lightbox";
 import { SECTIONS, type SectionId } from "./content/site";
@@ -37,6 +37,7 @@ export function App() {
   );
   const numberOf = (id: SectionId) => menu.find((item) => item.id === id)?.number ?? 0;
   const [current, setCurrent] = useCurrentSection(menu);
+  useJumpToSection(events.state !== "loading" && newsAnswer.state !== "loading" && gallery.state !== "loading");
 
   return (
     <LightboxProvider>
@@ -71,6 +72,21 @@ function useMinute(): Date {
     return () => clearInterval(timer);
   }, []);
   return now;
+}
+
+/**
+ * An address that names a section (/#bliv-medlem, also where the old site's addresses lead) opens the page there.
+ * The browser cannot do it by itself, because the sections are drawn after the page has loaded, and the board and the
+ * news above change height when their lists arrive: so the jump waits until the lists are in (or have failed).
+ */
+function useJumpToSection(listsSettled: boolean) {
+  const done = useRef(false);
+  useEffect(() => {
+    if (!listsSettled || done.current) return;
+    done.current = true;
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+  }, [listsSettled]);
 }
 
 /** The section being read: the last one whose top has passed a third of the window. A click in the menu sets it at once. */
