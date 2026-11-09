@@ -27,12 +27,22 @@ browser ──▶ /api/events, /api/news, /api/gallery ──▶ Facebook Graph 
 
 ```
 netlify/functions/   the API: events, news, gallery, image (each file declares its address)
-netlify/lib/         server-only code: the Graph API call, which posts count as news, the gallery, the picture passing
+netlify/lib/         the functions' code: the Graph API call, which posts count as news, the gallery, the picture
+                     passing; types.ts and dates.ts are shared with the page
 public/              files served as they are (the station sign, the favicon)
-src/                 the page
+src/App.tsx          the page: loads the API answers and puts the sections together
+src/sections/        one file per section (»perron«), in page order, plus the header and the footer
+src/components/      parts used by the sections: the departure board, the ticket, the train, the photo viewer, …
+src/lib/             logic without React, with tests: Danish dates, the board, news, texts, the membership form
+src/content/site.ts  the fixed texts: welcome, volunteers, »Vælg din kupé«, the membership cards, contact details
+src/styles/          the stylesheet, colours first
 index.html           the page's shell
 netlify.toml         Netlify's build settings
 ```
+
+Dates are always shown in Danish time, whatever the visitor's own time zone. The board drops an event once it is over
+by the visitor's clock (Facebook's end time, or three hours after the start). The photo section only shows when
+`FB_GALLERY_ALBUM_ID` is set and the album has photos; the menu and the »perron« numbers follow.
 
 ## Running it locally
 
@@ -69,7 +79,8 @@ branch and open a pull request; Netlify then builds a preview of it, and merging
 
 ## Not done yet
 
-- The membership form checks what is typed but does not send it anywhere yet; how sign-ups should reach the club is
-  still to be decided.
+- The membership form checks what is typed but does not send it anywhere yet: »Send« asks people to write to the club
+  by email instead. How sign-ups should reach the club is still to be decided; `sendApplication` in
+  `src/lib/membership.ts` is the one place to connect it, and the receipt is ready for when it is.
 - The site still tells search engines to skip it (`noindex` in `index.html`). Remove that when it goes live on
   kupeen9520.dk.
