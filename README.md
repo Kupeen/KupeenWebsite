@@ -29,7 +29,8 @@ browser ──▶ /api/events, /api/news, /api/gallery ──▶ Facebook Graph 
 netlify/functions/   the API: events, news, gallery, image (each file declares its address)
 netlify/lib/         the functions' code: the Graph API call, which posts count as news, the gallery, the picture
                      passing; types.ts and dates.ts are shared with the page
-public/              files served as they are (the station sign, the favicon)
+public/              files served as they are (the favicon)
+src/images/          pictures the page itself uses (the station sign)
 src/App.tsx          the page: loads the API answers and puts the sections together
 src/sections/        one file per section (»perron«), in page order, plus the header and the footer
 src/components/      parts used by the sections: the departure board, the ticket, the train, the photo viewer, …
@@ -59,8 +60,8 @@ npm run dev               # the site and the API on http://localhost:5173
 ## Settings
 
 The Facebook settings are environment variables. Locally they go in `.env` (never committed); on Netlify under
-Site configuration → Environment variables, with »Functions« included in their scope. After changing a value on
-Netlify, deploy again so the functions see it.
+Project configuration → Environment variables (they reach the functions by default; on paid plans, keep »Functions«
+in their scope). After changing a value on Netlify, deploy again so the functions see it.
 
 | Name | What |
 |---|---|
@@ -76,6 +77,23 @@ replace `FB_PAGE_TOKEN`. Facebook's Access Token Debugger shows when a token's d
 
 Netlify builds the site from this repository. `main` is the live site: every push to `main` is published. Work on a
 branch and open a pull request; Netlify then builds a preview of it, and merging publishes it.
+
+### Staying within Netlify's free plan
+
+The free plan has a fixed monthly allowance of credits. When it is used up, Netlify takes the site offline until the
+next month; it never sends a bill. What uses credits, and what the site does about it:
+
+- **Publishing:** each push to `main` costs as much as several hundred visits. Previews of pull requests cost
+  nothing, so collect changes on a branch and merge them together.
+- **Bandwidth:** about 1 MB per visit, mostly pictures. The station sign is a small WebP, and browsers keep the built
+  files in `/assets/` for a year (their names change when their content does, see `netlify.toml`).
+- **The functions:** the CDN keeps lists an hour and pictures a day, a missing picture 5 minutes and a failed Facebook
+  call 1 minute (`netlify/lib/http.ts`), so the functions run rarely even when something is wrong.
+- **Pictures asked for over and over:** `/api/image/…` answers at most 300 requests a minute from one address, then
+  429 (`rateLimit` in `netlify/functions/image.mts`, enforced by Netlify on deployed sites).
+
+Netlify emails the account owner at 50 %, 75 % and 100 % of the month's credits; the account's usage page shows what
+each day used.
 
 ## Not done yet
 

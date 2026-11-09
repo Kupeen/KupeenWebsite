@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { StationClock } from "../components/StationClock";
 import type { SectionId } from "../content/site";
+import signImage from "../images/skorping-sign.webp";
 
 export interface MenuItem {
   id: SectionId;
@@ -17,7 +18,7 @@ export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: S
         <div className="brand">
           <div className="sign">
             {/* The lettering is traced from a photo of the sign; the worn navy enamel is drawn. */}
-            <img src="/images/skorping-sign.png" alt="Skørping" width={360} height={60} />
+            <img src={signImage} alt="Skørping" width={360} height={60} />
             <div className="sign-rail" aria-hidden="true" />
             <div className="sign-bolt" aria-hidden="true" />
             <div className="sign-bolt right" aria-hidden="true" />
