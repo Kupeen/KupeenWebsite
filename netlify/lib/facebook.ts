@@ -43,7 +43,4 @@ export async function getJson<T>(url: string, token: string): Promise<T> {
   return body as T;
 }
 
-// Facebook writes offsets as +0100; Safari cannot parse that without the colon.
-export function parseFacebookDate(text: string): Date {
-  return new Date(text.replace(/([+-]\d{2})(\d{2})$/, "$1:$2"));
-}
+export { parseFacebookDate } from "./dates";
