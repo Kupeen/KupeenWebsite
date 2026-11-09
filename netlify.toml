@@ -10,3 +10,12 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Vite names every file in /assets/ after its content (index-BNqPO66q.js), so a changed file gets a new name and the
+# old one never changes. Browsers may keep them for a year instead of asking again on every visit (Netlify's default
+# is to ask again), which saves requests and bandwidth for people who come back. index.html keeps the default, so a
+# new version is seen at once.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
