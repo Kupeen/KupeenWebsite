@@ -1,0 +1,35 @@
+{
+  "name": "kupeen-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Kupéen's homepage (kupeen9520.dk): events and news from the Facebook Page, in the »Afgang 9520« design.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/bungee": "^5.3.0",
+    "@fontsource/space-mono": "^5.3.0",
+    "@fontsource/work-sans": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^6.1.1",
+    "@netlify/vite-plugin": "^3.0.1",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

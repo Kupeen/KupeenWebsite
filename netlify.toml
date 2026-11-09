@@ -1,0 +1,12 @@
+# Netlify builds the site from this repository: Vite writes the pages to dist/, and the API (/api/…) is the
+# functions in netlify/functions/. The Facebook settings are environment variables in Netlify (see README.md).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions"

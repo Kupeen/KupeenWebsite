@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.netlify/
+*.tsbuildinfo
+.DS_Store
+
+# Settings with secrets (the Facebook token); .env.example lists the names
+.env
+.env.*
+!.env.example
