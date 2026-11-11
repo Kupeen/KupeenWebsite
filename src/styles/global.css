@@ -1869,6 +1869,15 @@ a.photo-button {
   font-weight: 700;
 }
 
+/* The spam trap: off screen for people, still in the form for robots. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .receipt {
   position: relative;
   margin-top: 36px;
