@@ -227,6 +227,10 @@ function MembershipForm({ type, onType, opened, onClose, onSent }: FormProps) {
           din adresse og den medlemstype, du ønsker.
         </p>
       )}
+      <p className="form-privacy">
+        Vi bruger dine oplysninger til at registrere dit medlemskab og sende dig en faktura. Læs mere i vores{" "}
+        <a href="/privatliv">privatlivspolitik</a>.
+      </p>
       <div className="form-actions">
         <button type="submit" className="send-button" disabled={sending}>
           {sending ? "Sender …" : "Send"}

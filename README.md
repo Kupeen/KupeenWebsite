@@ -39,6 +39,7 @@ src/lib/             logic without React, with tests: Danish dates, the board, n
 src/content/site.ts  the fixed texts: welcome, volunteers, »Vælg din kupé«, the membership cards, contact details
 src/styles/          the stylesheet, colours first
 index.html           the page's shell
+privatliv.html       the privacy page's shell (/privatliv; src/privacy.tsx, src/pages/PrivacyPage.tsx)
 netlify.toml         Netlify's build settings
 ```
 

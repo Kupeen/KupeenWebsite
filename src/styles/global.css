@@ -2105,6 +2105,61 @@ a.photo-button {
   object-fit: cover;
 }
 
+/* ---- The form's privacy note and the privacy page (/privatliv) ---- */
+
+.form-privacy {
+  margin: 18px 0 0;
+  font-size: 15px;
+}
+
+.form-privacy a {
+  color: inherit;
+}
+
+.privacy {
+  max-width: 760px;
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+
+.privacy .heading {
+  margin: 18px 0 16px;
+  color: var(--gold);
+}
+
+.privacy h2 {
+  margin: 34px 0 8px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.privacy p {
+  margin: 0 0 14px;
+}
+
+.back-link {
+  font-family: var(--mono);
+  font-weight: 700;
+}
+
+/* A fact the club still has to fill in: impossible to overlook. */
+.missing {
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--tomato);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.privacy-updated {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 14px;
+  opacity: 0.8;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .board-title-track.scrolling,

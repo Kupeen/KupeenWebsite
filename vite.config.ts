@@ -7,6 +7,8 @@ import { siteUrl } from "./src/lib/siteUrl";
 // The site uses no Edge Functions and no Netlify Database, so their local emulators stay off.
 export default defineConfig({
   plugins: [react(), netlify({ edgeFunctions: { enabled: false }, database: { enabled: false } }), fillSiteUrl()],
+  // Two pages: the front page and the privacy page (/privatliv, see netlify.toml).
+  build: { rollupOptions: { input: { main: "index.html", privatliv: "privatliv.html" } } },
 });
 
 /** Writes the site's own address into index.html wherever it says %SITE_URL% (the link preview tags). */
