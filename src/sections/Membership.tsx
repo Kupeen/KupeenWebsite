@@ -7,6 +7,7 @@ import { Kicker } from "../components/Kicker";
 import { CONTACT_EMAIL, MEMBERSHIP_CARDS, MEMBERSHIP_TEXT } from "../content/site";
 import {
   checkApplication,
+  HONEYPOT_FIELD,
   MEMBERSHIP_FIELDS,
   MEMBERSHIP_TYPES,
   receiptText,
@@ -113,7 +114,7 @@ interface FormProps {
 function MembershipForm({ type, onType, opened, onClose, onSent }: FormProps) {
   const form = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<MembershipErrors>({});
-  const [notConnected, setNotConnected] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
@@ -129,7 +130,7 @@ function MembershipForm({ type, onType, opened, onClose, onSent }: FormProps) {
     const result = checkApplication(type, (name) => String(data.get(name) ?? ""));
     if ("errors" in result) {
       setErrors(result.errors);
-      setNotConnected(false);
+      setFailed(false);
       // Focus goes to the first thing that needs fixing.
       const first = MEMBERSHIP_FIELDS.find((f) => result.errors[f.name]);
       const target = result.errors.type ? form.current?.querySelector<HTMLElement>("[aria-pressed]") : form.current?.querySelector<HTMLElement>(`[name="${first?.name}"]`);
@@ -137,11 +138,12 @@ function MembershipForm({ type, onType, opened, onClose, onSent }: FormProps) {
       return;
     }
     setErrors({});
+    setFailed(false);
     setSending(true);
-    const outcome = await sendApplication(result.application);
+    const outcome = await sendApplication(result.application, String(data.get(HONEYPOT_FIELD) ?? ""));
     setSending(false);
     if (outcome.sent) onSent(result.application);
-    else setNotConnected(true);
+    else setFailed(true);
   };
 
   // Typing in a field clears its message; the others stay until the next »Send«.
@@ -212,15 +214,22 @@ function MembershipForm({ type, onType, opened, onClose, onSent }: FormProps) {
           );
         })}
       </div>
-      {notConnected && (
+      {/* Only robots fill this in; people never see it (see HONEYPOT_FIELD). */}
+      <div className="honeypot" aria-hidden="true">
+        <label>
+          Udfyld ikke dette felt
+          <input name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+      {failed && (
         <p className="form-error" role="alert">
-          Formularen kan ikke sendes herfra endnu. Skriv i stedet til <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> med dit navn, din
-          adresse og den medlemstype, du ønsker, så sender vi en faktura.
+          Tilmeldingen kunne ikke sendes. Prøv igen om lidt, eller skriv til <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> med dit navn,
+          din adresse og den medlemstype, du ønsker.
         </p>
       )}
       <div className="form-actions">
         <button type="submit" className="send-button" disabled={sending}>
-          Send
+          {sending ? "Sender …" : "Send"}
         </button>
         <button type="button" className="text-button" onClick={onClose}>
           Luk formularen

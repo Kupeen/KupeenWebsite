@@ -1,0 +1,26 @@
+<!doctype html>
+<!--
+  Netlify Forms finds forms in the site's HTML files when it builds. The membership form is drawn by JavaScript, so
+  Netlify never sees it there: this plain copy tells Netlify the form's name and fields. Nobody visits this page; the
+  page posts to Netlify itself (sendApplication in src/lib/membership.ts). Names must match those in membership.ts.
+-->
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Medlemsformular</title>
+  </head>
+  <body>
+    <form name="medlemskab" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" />
+      <input name="type" />
+      <input name="name" />
+      <input name="address" />
+      <input name="zip" />
+      <input name="city" />
+      <input name="email" />
+      <input name="phone" />
+      <input name="birthdate" />
+    </form>
+  </body>
+</html>
