@@ -9,6 +9,7 @@
   --board-hover: #1b2a48;
   --cream: #fff4dc;
   --tomato: #ff5a36;
+  --tomato-on-gold: #c8361a;
   --gold: #ffc93c;
   --pink: #ff8fb1;
   --teal: #2ec4b6;
@@ -75,8 +76,47 @@ button {
   100% { transform: translateX(0); opacity: 1; }
 }
 
+/* Blinks a few times to catch the eye, then stays still (moving content may not go on and on). */
 .blink {
-  animation: blink 1s steps(2) infinite;
+  animation: blink 1s steps(2) 6;
+}
+
+/* ---- Keyboard: a visible focus ring everywhere, and a way past the header ---- */
+
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* On the light grounds teal is too pale; ink stands out there. */
+.welcome :focus-visible,
+.lost :focus-visible,
+.ticket :focus-visible,
+.featured :focus-visible,
+.ticket-form :focus-visible,
+.receipt :focus-visible,
+.loudspeaker :focus-visible {
+  outline-color: var(--ink);
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.skip-link:focus {
+  top: 16px;
 }
 
 /* ---- Section headings: »PERRON n · NAME« and the title ---- */
@@ -306,8 +346,9 @@ button {
   line-height: 0.95;
 }
 
+/* A deeper tomato: the bright one on the yellow ground is too faint to read (contrast 2:1, large text needs 3:1). */
 .welcome h1 span {
-  color: var(--tomato);
+  color: var(--tomato-on-gold);
 }
 
 .welcome-text {
@@ -729,6 +770,14 @@ button {
 
 .board-title-track.scrolling {
   animation: boardScroll 14s ease-in-out infinite;
+}
+
+/* Moving text holds still while someone points at it or is on it with the keyboard. */
+.board-row:hover .board-title-track,
+.board-row:focus-visible .board-title-track,
+.loudspeaker:hover .marquee,
+.loudspeaker:focus-within .marquee {
+  animation-play-state: paused;
 }
 
 .board-status {
@@ -2158,6 +2207,101 @@ a.photo-button {
   font-family: var(--mono);
   font-size: 14px;
   opacity: 0.8;
+}
+
+/* ---- The page for addresses that do not exist (404.html): a cancelled departure, and the train ---- */
+
+.lost {
+  background: var(--gold);
+  color: var(--ink);
+  padding-top: 56px;
+}
+
+.lost-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-end;
+}
+
+.lost-main {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.lost-kicker {
+  margin: 0;
+  font: 700 15px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+}
+
+.lost h1 {
+  margin: 12px 0 18px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(40px, 6.5vw, 88px);
+  line-height: 0.95;
+}
+
+.lost h1 span {
+  color: var(--tomato-on-gold);
+}
+
+.lost-text {
+  margin: 0 0 24px;
+  max-width: 640px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.lost-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lost-side {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.lost-board {
+  width: 100%;
+  max-width: 380px;
+  padding: 16px 18px 18px;
+  border-radius: 12px;
+  background: var(--board);
+  color: var(--cream);
+  font-family: var(--mono);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.lost-board-head,
+.lost-board-row {
+  display: grid;
+  grid-template-columns: 7.5em 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.lost-board-head {
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  opacity: 0.75;
+}
+
+.lost-board-row {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lost-status {
+  color: var(--tomato);
+  letter-spacing: 0.08em;
 }
 
 @media (prefers-reduced-motion: reduce) {

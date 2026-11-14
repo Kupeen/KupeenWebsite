@@ -42,8 +42,12 @@ export function App() {
   return (
     <LightboxProvider>
       <div className="page">
+        {/* The first thing a keyboard reaches: past the sign, the clock and the menu, straight to the page. */}
+        <a className="skip-link" href="#indhold">
+          Spring til indholdet
+        </a>
         <Header menu={menu} current={current} onPick={setCurrent} />
-        <main>
+        <main id="indhold" tabIndex={-1}>
           <Welcome
             number={numberOf("forside")}
             next={departures.state === "ready" ? (departures.data[0] ?? null) : null}

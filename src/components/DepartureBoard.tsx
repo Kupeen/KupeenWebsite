@@ -108,7 +108,7 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
                       className="board-row"
                       data-first-of={j === 0 ? month.key : undefined}
                       aria-pressed={departure.id === selectedId}
-                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}`}
+                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}, ${departure.ticketUrl ? "køb billet" : "til tiden"}`}
                       onClick={() => onPick(departure)}
                     >
                       <span className="tiles">
