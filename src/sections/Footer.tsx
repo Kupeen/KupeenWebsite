@@ -10,6 +10,7 @@ export function Footer() {
           Kupéen • {ADDRESS.street} • {ADDRESS.zip} {ADDRESS.town}
         </span>
         <a href={FACEBOOK_PAGE_URL}>Kupéen på Facebook</a>
+        <a href="/privatliv">Privatlivspolitik</a>
       </div>
     </footer>
   );

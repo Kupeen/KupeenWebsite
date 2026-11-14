@@ -75,13 +75,37 @@ export function receiptText({ type, values }: Application): string {
     : `Du er tilmeldt som ${type.as}. Kupéen sender en faktura på ${type.price} til ${values.email}.`;
 }
 
-export type SendResult = { sent: true } | { sent: false; reason: "not-connected" };
+// The application goes to Netlify Forms, which keeps it under the project's »Forms« and emails it to the club.
+// Netlify only knows the form from the static copy in public/forms.html: its name and field names must match these.
 
-/**
- * Sends the application to the club. Where it goes (Netlify Forms, a mail service or the club's database) is not
- * decided yet, so nothing is sent and nothing leaves the browser.
- */
-export async function sendApplication(application: Application): Promise<SendResult> {
-  void application;
-  return { sent: false, reason: "not-connected" };
+/** The form's name on Netlify. */
+export const FORM_NAME = "medlemskab";
+
+/** A field people never see. Only robots fill it in, and Netlify drops what they send (`netlify-honeypot`). */
+export const HONEYPOT_FIELD = "bot-field";
+
+export type SendResult = { sent: true } | { sent: false };
+
+/** What is posted to Netlify: url-encoded (Netlify Forms takes no JSON), with the form's name. */
+export function applicationBody({ type, values }: Application, honeypot = ""): string {
+  return new URLSearchParams({
+    "form-name": FORM_NAME,
+    [HONEYPOT_FIELD]: honeypot,
+    type: `${type.name} (${type.price})`,
+    ...values,
+  }).toString();
+}
+
+/** Sends the application to Netlify Forms. Any answer but 2xx, or no answer, counts as not sent. */
+export async function sendApplication(application: Application, honeypot = "", post: typeof fetch = fetch): Promise<SendResult> {
+  try {
+    const response = await post("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: applicationBody(application, honeypot),
+    });
+    return { sent: response.ok };
+  } catch {
+    return { sent: false };
+  }
 }
