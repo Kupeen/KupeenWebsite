@@ -43,8 +43,10 @@ export function PrivacyPage() {
         <h2>Hvem får oplysningerne</h2>
         <p>
           Hjemmesiden drives af Netlify, Inc., som modtager og opbevarer formularen for os og sender den videre som en email. Netlify er et
-          amerikansk firma og behandler oplysningerne som vores databehandler. Overførslen til USA sker på grundlag af{" "}
-          <Missing>grundlaget i Netlifys databehandleraftale</Missing>. Emailen lander i foreningens Gmail-postkasse hos Google.
+          amerikansk firma og behandler oplysningerne som vores databehandler efter sin{" "}
+          <a href="https://www.netlify.com/gdpr/">databehandleraftale</a>. Overførslen til USA sker på grundlag af EU-US Data Privacy Framework,
+          som Netlify er certificeret under, og EU-Kommissionens standardkontraktbestemmelser. Emailen lander i foreningens Gmail-postkasse hos
+          Google.
         </p>
         <p>Vi sælger ikke dine oplysninger og giver dem ikke videre til andre.</p>
 
