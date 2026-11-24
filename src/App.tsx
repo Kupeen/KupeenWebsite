@@ -50,13 +50,14 @@ export function App() {
         <main id="indhold" tabIndex={-1}>
           <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
-          {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} />}
           <News number={numberOf("nyheder")} news={news} />
           {photos.length > 0 && <Photos number={numberOf("billeder")} photos={photos} />}
           <Volunteers number={numberOf("frivillig")} photo={photos[0] ?? null} />
           <About number={numberOf("om-os")} />
           <Membership number={numberOf("bliv-medlem")} />
         </main>
+        {/* The headlines run past at the very bottom, right on top of the footer. */}
+        {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} />}
         <Footer />
       </div>
     </LightboxProvider>

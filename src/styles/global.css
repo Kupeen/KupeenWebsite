@@ -1978,6 +1978,11 @@ a.photo-button {
   background: var(--ink);
 }
 
+/* The loudspeaker strip sits right on top of the footer. */
+.loudspeaker + .site-footer {
+  margin-top: 0;
+}
+
 .footer-track {
   height: 26px;
   background: repeating-linear-gradient(90deg, var(--sleeper) 0 18px, #3a3f4a 18px 46px);
