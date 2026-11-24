@@ -10,7 +10,7 @@ import { Footer } from "./sections/Footer";
 import { Header, type MenuItem } from "./sections/Header";
 import { Loudspeaker } from "./sections/Loudspeaker";
 import { Membership } from "./sections/Membership";
-import { News } from "./sections/News";
+import { News, type OpenNewsRequest } from "./sections/News";
 import { Photos } from "./sections/Photos";
 import { Volunteers } from "./sections/Volunteers";
 import { Welcome } from "./sections/Welcome";
@@ -39,6 +39,13 @@ export function App() {
   const [current, setCurrent] = useCurrentSection(menu);
   useJumpToSection(events.state !== "loading" && newsAnswer.state !== "loading" && gallery.state !== "loading");
 
+  // A headline in the loudspeaker opens its post in the news section.
+  const [newsRequest, setNewsRequest] = useState<OpenNewsRequest | null>(null);
+  const openNews = (id: string) => {
+    setCurrent("nyheder");
+    setNewsRequest((previous) => ({ id, n: (previous?.n ?? 0) + 1 }));
+  };
+
   return (
     <LightboxProvider>
       <div className="page">
@@ -50,14 +57,14 @@ export function App() {
         <main id="indhold" tabIndex={-1}>
           <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
-          <News number={numberOf("nyheder")} news={news} />
+          <News number={numberOf("nyheder")} news={news} openRequest={newsRequest} />
           {photos.length > 0 && <Photos number={numberOf("billeder")} photos={photos} />}
           <Volunteers number={numberOf("frivillig")} photo={photos[0] ?? null} />
           <About number={numberOf("om-os")} />
           <Membership number={numberOf("bliv-medlem")} />
         </main>
         {/* The headlines run past at the very bottom, right on top of the footer. */}
-        {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} />}
+        {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} onOpen={openNews} />}
         <Footer />
       </div>
     </LightboxProvider>

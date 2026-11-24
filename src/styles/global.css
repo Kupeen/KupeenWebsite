@@ -1034,8 +1034,16 @@ html {
   animation: marquee 60s linear infinite;
 }
 
-.marquee span {
-  padding-right: 40px;
+/* Each headline leads to its post; it underlines when pointed at (the strip stands still then). */
+.marquee a {
+  margin-right: 40px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.marquee a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
 }
 
 /* ---- Nyheder ---- */
