@@ -2,7 +2,7 @@
 // and »Stop toget« brakes it so it stops exactly at the platform again.
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CARRIAGE_COLOURS } from "../content/site";
+import { CARRIAGES } from "../content/site";
 
 const PLATFORM_X = 24;
 const ACCELERATION = 160; // px/s²
@@ -130,7 +130,7 @@ function playWhistle(existing: AudioContext | null): AudioContext | null {
   }
 }
 
-/** The locomotive and the carriages that spell KUPÉEN, on their track. */
+/** The locomotive and its carriages, one word on each, on their track. */
 export function Train({ trainRef, moving }: { trainRef: (node: HTMLDivElement | null) => void; moving: boolean }) {
   return (
     <div className="track" aria-hidden="true">
@@ -145,10 +145,9 @@ export function Train({ trainRef, moving }: { trainRef: (node: HTMLDivElement | 
           <div className="wheel" style={{ left: 30 }} />
           <div className="wheel" style={{ right: 18 }} />
         </div>
-        {Array.from("KUPÉEN").map((letter, i) => (
-          <div key={i} className="car" style={{ background: CARRIAGE_COLOURS[i] }}>
-            <div className="window">{letter}</div>
-            <div className="window" />
+        {CARRIAGES.map(({ word, colour }) => (
+          <div key={word} className="car word" style={{ background: colour }}>
+            <div className="car-sign">{word}</div>
             <div className="wheel" style={{ left: 14 }} />
             <div className="wheel" style={{ right: 14 }} />
           </div>
