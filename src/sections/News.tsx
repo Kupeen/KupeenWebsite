@@ -54,7 +54,7 @@ export function News({ number, news, openRequest }: { number: number; news: Load
         NYHEDER
       </Kicker>
       <h2 className="heading" style={{ color: "var(--pink)", marginBottom: 8 }}>
-        Nyt fra perronen
+        Nyt fra Kupéen
       </h2>
       <p className="lead">Det seneste fra Kupéens Facebook-side: billeder fra koncerter og fester, tak for sidst og hvad der er på vej.</p>
 
