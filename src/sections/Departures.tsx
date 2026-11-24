@@ -60,12 +60,14 @@ export function Departures({ number, departures }: { number: number; departures:
             <Ticket departure={picked} open={ticketOpen} onToggle={() => setTicketOpen((open) => !open)} />
           </div>
         )}
-        <DepartureBoard months={months} selectedId={picked?.id ?? null} onPick={pick} rollKey={rollKey} message={message} />
-        <div className="timetable-note">
-          <strong>KØREPLAN · ÅBNINGSTIDER</strong>
-          <span>Åbningstiderne følger events.</span>
-          <a href={FACEBOOK_PAGE_URL}>Se Kupéens Facebook-side for en opdateret kalender</a>
-        </div>
+        <DepartureBoard
+          months={months}
+          selectedId={picked?.id ?? null}
+          onPick={pick}
+          rollKey={rollKey}
+          message={message}
+          note="Åbningstider: Følger arrangementer."
+        />
       </div>
     </section>
   );

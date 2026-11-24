@@ -18,9 +18,11 @@ interface Props {
   rollKey: number;
   /** Shown instead of rows while loading, after a failure or when there is nothing. */
   message?: ReactNode;
+  /** A line under the board, after the scroll hint (the opening hours). */
+  note?: ReactNode;
 }
 
-export function DepartureBoard({ months, selectedId, onPick, rollKey, message }: Props) {
+export function DepartureBoard({ months, selectedId, onPick, rollKey, message, note }: Props) {
   const departures = useMemo(() => months.flatMap((m) => m.departures), [months]);
   const narrow = useMediaQuery("(max-width: 720px)");
   const rows = useMemo(() => {
@@ -141,7 +143,12 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
         </div>
         {departures.length > ROWS_IN_VIEW && !atEnd && <div className="board-fade" aria-hidden="true" />}
       </div>
-      {departures.length > ROWS_IN_VIEW && <div className="board-hint">Rul ned i tavlen for at se alle {departures.length} afgange.</div>}
+      {(departures.length > ROWS_IN_VIEW || note) && (
+        <div className="board-hint">
+          {departures.length > ROWS_IN_VIEW && `Rul ned i tavlen for at se alle ${departures.length} afgange. `}
+          {note}
+        </div>
+      )}
     </div>
   );
 }

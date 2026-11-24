@@ -990,26 +990,6 @@ html {
   font-size: 13px;
 }
 
-.timetable-note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 24px;
-  padding: 18px 24px;
-  border: 3px dashed var(--gold);
-  border-radius: 16px;
-}
-
-.timetable-note strong {
-  font: 700 13px/1.55 var(--mono);
-  letter-spacing: 0.14em;
-  color: var(--gold);
-}
-
-.timetable-note a {
-  font-weight: 800;
-}
-
 /* ---- Højtaleren: the latest headlines, running past ---- */
 
 .loudspeaker {
