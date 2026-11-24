@@ -1,4 +1,4 @@
-// Perron 7, »Billetlugen«: the membership cards and the form. »Klip billet« on a card picks that type and opens the
+// The last section, »Bliv medlem«: the membership cards and the form. »Klip billet« on a card picks that type and opens the
 // form; punching the punched card again takes the punch back and closes the form.
 
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from "react";
@@ -50,7 +50,7 @@ export function Membership({ number }: { number: number }) {
         BLIV MEDLEM
       </Kicker>
       <h2 className="heading" style={{ color: "var(--lilac)", marginBottom: 8 }}>
-        Billetlugen · bliv medlem
+        Bliv medlem
       </h2>
       <p className="lead">{MEMBERSHIP_TEXT}</p>
       <div className="cards">
