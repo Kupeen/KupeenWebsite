@@ -200,11 +200,18 @@ html {
   min-width: 0;
 }
 
+/* The sign is a link to the start, like a logo: it brightens a little when pointed at. */
 .sign {
   position: relative;
+  display: block;
   flex: none;
   max-width: 100%;
   padding-bottom: 12px;
+  border-radius: 4px;
+}
+
+.sign:hover img {
+  filter: brightness(1.15);
 }
 
 /* Small on phones, so the header takes little of the screen. */

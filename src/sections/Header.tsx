@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent, type RefObject } from "react";
 import type { SectionId } from "../content/site";
 import signImage from "../images/skorping-sign.webp";
 
@@ -24,13 +24,14 @@ export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: S
   return (
     <header ref={header} className="site-header">
       <div className="header-bar">
-        <div className="sign">
+        {/* Like a logo, the sign leads back to the start: the plain address, at the top of the page. */}
+        <a className="sign" href="/" aria-label="Skørping, til forsiden" onClick={(event) => goHome(event, () => onPick("forside"))}>
           {/* The lettering is traced from a photo of the sign; the worn navy enamel is drawn. */}
-          <img src={signImage} alt="Skørping" width={360} height={60} />
-          <div className="sign-rail" aria-hidden="true" />
-          <div className="sign-bolt" aria-hidden="true" />
-          <div className="sign-bolt right" aria-hidden="true" />
-        </div>
+          <img src={signImage} alt="" width={360} height={60} />
+          <span className="sign-rail" aria-hidden="true" />
+          <span className="sign-bolt" aria-hidden="true" />
+          <span className="sign-bolt right" aria-hidden="true" />
+        </a>
         <p className="tagline">
           KULTURHUS 9520
           <br />
@@ -58,6 +59,19 @@ export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: S
       </div>
     </header>
   );
+}
+
+/**
+ * A plain click on the sign: back to the top and the plain address (no #section), without loading the page again.
+ * A click with a modifier key (new tab, new window) is left to the browser, which opens "/" as a normal link.
+ */
+function goHome(event: MouseEvent<HTMLAnchorElement>, onHome: () => void) {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  if (window.location.pathname + window.location.search + window.location.hash !== "/") window.history.pushState(null, "", "/");
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: still ? "instant" : "smooth" });
+  onHome();
 }
 
 /**
