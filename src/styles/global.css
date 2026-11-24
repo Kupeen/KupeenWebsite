@@ -2199,15 +2199,6 @@ a.photo-button {
   font-weight: 700;
 }
 
-/* A fact the club still has to fill in: impossible to overlook. */
-.missing {
-  padding: 0 4px;
-  border-radius: 4px;
-  background: var(--tomato);
-  color: var(--ink);
-  font-weight: 700;
-}
-
 .privacy-updated {
   margin-top: 34px;
   font-family: var(--mono);

@@ -1,11 +1,5 @@
-import type { ReactNode } from "react";
 import { ADDRESS, CONTACT_EMAIL } from "../content/site";
 import { Footer } from "../sections/Footer";
-
-/** A fact only the club can fill in. Shown highlighted, so the page cannot go out with a gap nobody noticed. */
-function Missing({ children }: { children: ReactNode }) {
-  return <mark className="missing">[{children}]</mark>;
-}
 
 const mail = <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>;
 
@@ -25,15 +19,15 @@ export function PrivacyPage() {
 
         <h2>Hvem er ansvarlig</h2>
         <p>
-          Skørping Kulturforening (Kupéen), {ADDRESS.street}, {ADDRESS.zip} {ADDRESS.town}, CVR-nr. <Missing>CVR-nummer</Missing>, er dataansvarlig
-          for de oplysninger, du giver os. Har du spørgsmål, så skriv til {mail} <Missing>evt. navn på kontaktperson</Missing>.
+          Skørping Kulturforening (Kupéen), {ADDRESS.street}, {ADDRESS.zip} {ADDRESS.town}, CVR-nr. 43067664, er dataansvarlig for de
+          oplysninger, du giver os. Har du spørgsmål, så skriv til {mail}. Kontaktperson er Karolina H. Kanstrup.
         </p>
 
         <h2>Når du melder dig ind</h2>
         <p>
           Medlemsformularen beder om medlemstype, navn, adresse, postnummer, by, email, telefonnummer og fødselsdato. Vi bruger oplysningerne til at
-          registrere dit medlemskab, sende dig en faktura og kontakte dig om dit medlemskab. Fødselsdatoen bruger vi til{" "}
-          <Missing>formålet, fx at se om du kan være ungemedlem</Missing>.
+          registrere dit medlemskab, sende dig en faktura og kontakte dig om dit medlemskab. Fødselsdatoen bruger vi til at se, om du kan være
+          ungemedlem.
         </p>
         <p>
           Grundlaget er dit medlemskab: vi har brug for oplysningerne for at kunne optage dig som medlem og opkræve kontingent
@@ -52,8 +46,8 @@ export function PrivacyPage() {
 
         <h2>Hvor længe gemmer vi dem</h2>
         <p>
-          Vi gemmer dine oplysninger, så længe du er medlem, og sletter dem <Missing>hvornår efter udmeldelse</Missing>. Fakturaer og andet
-          regnskabsmateriale gemmes i fem år, som bogføringsloven kræver.
+          Vi gemmer dine oplysninger, så længe du er medlem, og sletter dem, når du melder dig ud. Fakturaer og andet regnskabsmateriale gemmes
+          dog i fem år, som bogføringsloven kræver.
         </p>
 
         <h2>Når du bruger hjemmesiden</h2>
@@ -77,7 +71,7 @@ export function PrivacyPage() {
         </p>
 
         <p className="privacy-updated">
-          Senest opdateret: <Missing>dato</Missing>
+          Senest opdateret: 24. november 2026
         </p>
       </main>
       <Footer />
