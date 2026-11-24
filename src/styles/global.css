@@ -172,7 +172,7 @@ main:focus {
   border-bottom: 6px solid var(--tomato);
 }
 
-/* The sign and the menu share one line; on narrow screens the menu wraps below the sign. */
+/* Narrow screens: the sign on top, the menu below it. */
 .header-bar {
   max-width: 1240px;
   margin: 0 auto;
@@ -188,6 +188,24 @@ main:focus {
   flex: none;
   max-width: 100%;
   padding-bottom: 12px;
+}
+
+/* Wider screens: the menu on the left, the sign on the right of the same line. Where the line is too short for
+   every button, the menu takes two rows and the sign stays on the right. (The sign comes first in the HTML, so
+   screen readers still meet »Skørping« before the menu.) */
+@media (min-width: 900px) {
+  .header-bar {
+    flex-wrap: nowrap;
+  }
+
+  .header-bar nav {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sign {
+    order: 1;
+  }
 }
 
 /* As tall as the menu buttons, so the line stays low. */
@@ -333,52 +351,6 @@ main:focus {
   flex-direction: column;
   gap: 12px;
   align-items: flex-start;
-}
-
-.latest {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: var(--ink);
-  color: var(--cream);
-  border-radius: 16px;
-  text-decoration: none;
-  box-shadow: 6px 6px 0 var(--tomato);
-}
-
-.latest img {
-  flex: none;
-  width: 96px;
-  height: 96px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.latest-label {
-  display: block;
-  font: 700 12px/1.55 var(--mono);
-  letter-spacing: 0.1em;
-  color: var(--pink);
-}
-
-.latest-title {
-  display: block;
-  margin-top: 4px;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.25;
-}
-
-.latest-more {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-  color: var(--gold);
 }
 
 .whistle {

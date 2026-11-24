@@ -4,12 +4,10 @@ import { Train, useTrain } from "../components/Train";
 import { WELCOME_TEXT } from "../content/site";
 import type { Departure } from "../lib/board";
 import { departureText } from "../lib/dates";
-import type { NewsItem } from "../lib/news";
 
-/** Perron 1: welcome, the latest news, and the train that leaves on the whistle. */
-export function Welcome({ number, next, latest, onNews }: { number: number; next: Departure | null; latest: NewsItem | null; onNews: () => void }) {
+/** Perron 1: welcome, and the train that leaves on the whistle. */
+export function Welcome({ number, next }: { number: number; next: Departure | null }) {
   const train = useTrain();
-  const cover = latest ? (latest.photos[0]?.src ?? latest.videoStill) : null;
   return (
     <section id="forside" className="welcome">
       <div className="wrap welcome-grid">
@@ -34,16 +32,6 @@ export function Welcome({ number, next, latest, onNews }: { number: number; next
           </ul>
         </div>
         <div className="welcome-side">
-          {latest && (
-            <a className="latest" href="#nyheder" onClick={onNews}>
-              {cover && <img src={cover} alt="" />}
-              <span style={{ minWidth: 0 }}>
-                <span className="latest-label">SENESTE NYT · {latest.date}</span>
-                <span className="latest-title">{latest.title}</span>
-                <span className="latest-more">{latest.photos.length > 0 ? "Læs og se billederne ↓" : "Læs mere ↓"}</span>
-              </span>
-            </a>
-          )}
           <button type="button" className="whistle" onClick={train.toggle}>
             <WhistleIcon />
             {train.running ? "Stop toget" : "Fløjt afgang!"}

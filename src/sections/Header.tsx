@@ -10,8 +10,8 @@ export interface MenuItem {
 }
 
 /**
- * One line: the old station sign that hangs in Kupéen, then the menu, one »perron« per section. On narrow screens
- * the menu wraps below the sign.
+ * One line: the menu, one »perron« per section, and on the right the old station sign that hangs in Kupéen. On
+ * narrow screens the sign sits on top and the menu below it (see .header-bar in global.css).
  */
 export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: SectionId; onPick: (id: SectionId) => void }) {
   return (

@@ -48,12 +48,7 @@ export function App() {
         </a>
         <Header menu={menu} current={current} onPick={setCurrent} />
         <main id="indhold" tabIndex={-1}>
-          <Welcome
-            number={numberOf("forside")}
-            next={departures.state === "ready" ? (departures.data[0] ?? null) : null}
-            latest={newsList[0] ?? null}
-            onNews={() => setCurrent("nyheder")}
-          />
+          <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
           {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} />}
           <News number={numberOf("nyheder")} news={news} />
