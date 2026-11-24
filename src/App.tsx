@@ -42,7 +42,7 @@ export function App() {
   return (
     <LightboxProvider>
       <div className="page">
-        {/* The first thing a keyboard reaches: past the sign, the clock and the menu, straight to the page. */}
+        {/* The first thing a keyboard reaches: past the sign and the menu, straight to the page. */}
         <a className="skip-link" href="#indhold">
           Spring til indholdet
         </a>

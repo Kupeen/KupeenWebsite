@@ -234,39 +234,6 @@ main:focus {
   color: var(--gold);
 }
 
-.clock {
-  position: relative;
-  flex: none;
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: var(--cream);
-  border: 5px solid var(--tomato);
-}
-
-.clock-hand {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  background: var(--ink);
-  transform-origin: 50% 100%;
-}
-
-.clock-hand.hour { width: 5px; height: 20px; margin-left: -2.5px; border-radius: 3px; }
-.clock-hand.minute { width: 3px; height: 28px; margin-left: -1.5px; border-radius: 2px; }
-.clock-hand.second { width: 2px; height: 30px; margin-left: -1px; background: var(--tomato); }
-
-.clock-pin {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: var(--tomato);
-}
-
 .header-menu {
   max-width: 1240px;
   margin: 0 auto;

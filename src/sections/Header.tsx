@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import { StationClock } from "../components/StationClock";
 import type { SectionId } from "../content/site";
 import signImage from "../images/skorping-sign.webp";
 
@@ -10,7 +9,7 @@ export interface MenuItem {
   number: number;
 }
 
-/** The old station sign that hangs in Kupéen, the station clock, and the menu: one »perron« per section. */
+/** The old station sign that hangs in Kupéen, and the menu: one »perron« per section. */
 export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: SectionId; onPick: (id: SectionId) => void }) {
   return (
     <header className="site-header">
@@ -29,7 +28,6 @@ export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: S
             KULTURHUS · 9520
           </div>
         </div>
-        <StationClock />
       </div>
       <div className="header-menu">
         <nav aria-label="Hovedmenu">
