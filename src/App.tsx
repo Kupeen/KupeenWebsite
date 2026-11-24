@@ -30,7 +30,7 @@ export function App() {
   const photos = gallery.state === "ready" ? gallery.data : [];
   const newsList = news.state === "ready" ? news.data : [];
 
-  // The photo section is left out while the album is empty; the menu and the »perron« numbers follow what is shown.
+  // The photo section is left out while the album is empty; the menu and the section numbers follow what is shown.
   const menu = useMemo<MenuItem[]>(
     () => SECTIONS.filter((s) => s.id !== "billeder" || photos.length > 0).map((s, i) => ({ ...s, number: i + 1 })),
     [photos.length],

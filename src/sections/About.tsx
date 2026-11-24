@@ -9,7 +9,7 @@ export function About({ number }: { number: number }) {
   return (
     <section id="om-os" className="wrap about">
       <Kicker number={number} colour="var(--cream)">
-        PERRON {number} · OM OS
+        OM OS
       </Kicker>
       <h2 className="heading" style={{ color: "var(--cream)", marginBottom: 8 }}>
         Vælg din kupé

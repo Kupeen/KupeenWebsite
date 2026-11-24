@@ -28,7 +28,7 @@ export function Departures({ number, departures }: { number: number; departures:
   return (
     <section id="aktiviteter" className="wrap departures">
       <Kicker number={number} colour="var(--gold)">
-        PERRON {number} · AKTIVITETER
+        AKTIVITETER
       </Kicker>
       <div className="departures-head">
         <h2 className="heading" style={{ color: "var(--gold)" }}>

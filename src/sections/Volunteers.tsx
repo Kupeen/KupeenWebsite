@@ -8,7 +8,7 @@ export function Volunteers({ number, photo }: { number: number; photo: GalleryPh
   return (
     <section id="frivillig" className="wrap volunteers">
       <Kicker number={number} colour="var(--teal)">
-        PERRON {number} · FRIVILLIG
+        FRIVILLIG
       </Kicker>
       <h2 className="heading" style={{ color: "var(--teal)", marginBottom: 24 }}>
         Hele togpersonalet er frivillige

@@ -15,10 +15,10 @@ export function Welcome({ number, next }: { number: number; next: Departure | nu
           <Kicker number={number} colour="var(--tomato)">
             {next ? (
               <>
-                PERRON {number} · NÆSTE AFGANG <span className="blink">{departureText(next.start)}</span>
+                NÆSTE AFGANG <span className="blink">{departureText(next.start)}</span>
               </>
             ) : (
-              <>PERRON {number} · VELKOMMEN</>
+              <>VELKOMMEN</>
             )}
           </Kicker>
           <h1>

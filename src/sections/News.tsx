@@ -22,7 +22,7 @@ export function News({ number, news }: { number: number; news: Loaded<NewsItem[]
   return (
     <section id="nyheder" className="wrap news">
       <Kicker number={number} colour="var(--pink)">
-        PERRON {number} · NYHEDER
+        NYHEDER
       </Kicker>
       <h2 className="heading" style={{ color: "var(--pink)", marginBottom: 8 }}>
         Nyt fra perronen

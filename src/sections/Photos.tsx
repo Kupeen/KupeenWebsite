@@ -18,7 +18,7 @@ export function Photos({ number, photos }: { number: number; photos: GalleryPhot
     <section id="billeder" className="photos">
       <div className="wrap">
         <Kicker number={number} colour="var(--sky)" inverted>
-          PERRON {number} · BILLEDER
+          BILLEDER
         </Kicker>
         <div className="photos-head">
           <h2 className="heading">Udsigt fra kupéen</h2>

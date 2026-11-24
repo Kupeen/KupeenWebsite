@@ -47,7 +47,7 @@ export function Membership({ number }: { number: number }) {
   return (
     <section id="bliv-medlem" className="wrap membership">
       <Kicker number={number} colour="var(--lilac)">
-        PERRON {number} · BLIV MEDLEM
+        BLIV MEDLEM
       </Kicker>
       <h2 className="heading" style={{ color: "var(--lilac)", marginBottom: 8 }}>
         Billetlugen · bliv medlem

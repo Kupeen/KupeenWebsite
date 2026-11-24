@@ -54,7 +54,7 @@ Debugger read the page again.
 
 Dates are always shown in Danish time, whatever the visitor's own time zone. The board drops an event once it is over
 by the visitor's clock (Facebook's end time, or three hours after the start). The photo section only shows when
-`FB_GALLERY_ALBUM_ID` is set and the album has photos; the menu and the »perron« numbers follow.
+`FB_GALLERY_ALBUM_ID` is set and the album has photos; the menu and the section numbers follow.
 
 ## Running it locally
 

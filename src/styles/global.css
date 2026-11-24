@@ -121,7 +121,7 @@ main:focus {
   top: 16px;
 }
 
-/* ---- Section headings: »PERRON n · NAME« and the title ---- */
+/* ---- Section headings: the number and name, and the title ---- */
 
 .kicker {
   display: flex;
