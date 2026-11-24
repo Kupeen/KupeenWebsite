@@ -87,8 +87,8 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message, n
         <div ref={board} className="board" onScroll={onScroll} tabIndex={0} role="region" aria-label="Afgangstavlen, rul ned for at se alle afgange">
           <div className="board-inner">
             <div className="board-head" aria-hidden="true">
-              <span>TID</span>
               <span>DATO</span>
+              <span>TID</span>
               <span className="board-head-title">AFGANG MOD</span>
               <span>STATUS</span>
             </div>
@@ -103,6 +103,8 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message, n
                   rowIndex += 1;
                   const row = rows[rowIndex];
                   const i = rowIndex;
+                  // An event with a ticket link sells tickets; one without counts as free.
+                  const status = departure.ticketUrl ? "KØB BILLET" : "GRATIS";
                   return (
                     <button
                       key={departure.id}
@@ -110,14 +112,14 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message, n
                       className="board-row"
                       data-first-of={j === 0 ? month.key : undefined}
                       aria-pressed={departure.id === selectedId}
-                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}, ${departure.ticketUrl ? "køb billet" : "til tiden"}`}
+                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}, ${status.toLowerCase()}`}
                       onClick={() => onPick(departure)}
                     >
                       <span className="tiles">
-                        <Tiles tiles={tilesAt(row.time, i, COLUMNS.time, time)} />
+                        <Tiles tiles={tilesAt(row.date, i, COLUMNS.date, time)} />
                       </span>
                       <span className="tiles">
-                        <Tiles tiles={tilesAt(row.date, i, COLUMNS.date, time)} />
+                        <Tiles tiles={tilesAt(row.time, i, COLUMNS.time, time)} />
                       </span>
                       <span className="board-title">
                         <span
@@ -132,7 +134,7 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message, n
                         </span>
                       </span>
                       <span className="board-status" style={{ color: departure.ticketUrl ? "var(--tomato)" : "var(--teal)" }}>
-                        {departure.ticketUrl ? "KØB BILLET" : "TIL TIDEN"}
+                        {status}
                       </span>
                     </button>
                   );
