@@ -10,9 +10,10 @@ export interface MenuItem {
 }
 
 /**
- * The header stays at the top while the page scrolls. One line: the menu, one »perron« per section, and on the right
- * the old station sign that hangs in Kupéen; on narrow screens the sign sits on top and the menu below it. The menu
- * is always one row: when its buttons do not fit, it can be swiped sideways (see .header-bar in global.css).
+ * The header stays at the top while the page scrolls. One line: the menu, one »perron« per section, then a small
+ * tagline and on the right the old station sign that hangs in Kupéen; on narrow screens the sign and the tagline sit
+ * on top and the menu below them. The menu is always one row: when its buttons do not fit, it can be swiped sideways
+ * (see .header-bar in global.css).
  */
 export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: SectionId; onPick: (id: SectionId) => void }) {
   const header = useRef<HTMLElement>(null);
@@ -30,6 +31,11 @@ export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: S
           <div className="sign-bolt" aria-hidden="true" />
           <div className="sign-bolt right" aria-hidden="true" />
         </div>
+        <p className="tagline">
+          KULTURHUS 9520
+          <br />
+          LIVEMUSIK · BAR · MØDESTED
+        </p>
         <nav aria-label="Hovedmenu">
           <ul ref={list} className={overflows ? "menu overflows" : "menu"}>
             {menu.map((item) => (

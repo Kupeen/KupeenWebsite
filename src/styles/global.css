@@ -216,8 +216,30 @@ html {
   box-shadow: 0 3px 0 #2c3038, 0 8px 16px rgba(0, 0, 0, 0.55);
 }
 
-/* Wider screens: the menu on the left, the sign on the right of the same line. (The sign comes first in the HTML,
-   so screen readers still meet »Skørping« before the menu.) */
+/* Two short lines beside the sign; on phones to its right, on wider screens just left of it. */
+.tagline {
+  flex: none;
+  margin: 0 0 10px;
+  font: 700 10px/1.5 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Narrow phones: a little closer to the sign and a little smaller, so it still fits beside it. */
+@media (max-width: 420px) {
+  .header-bar {
+    column-gap: 12px;
+  }
+
+  .tagline {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Wider screens: the menu on the left, then the tagline and the sign on the right of the same line. (The sign and
+   the tagline come first in the HTML, so screen readers still meet »Skørping« before the menu.) */
 @media (min-width: 900px) {
   .header-bar {
     flex-wrap: nowrap;
@@ -228,8 +250,14 @@ html {
     flex: 1 1 auto;
   }
 
-  .sign {
+  .tagline {
     order: 1;
+    margin-right: -10px;
+    text-align: right;
+  }
+
+  .sign {
+    order: 2;
   }
 
   /* As tall as the menu buttons, so the line stays low. */
