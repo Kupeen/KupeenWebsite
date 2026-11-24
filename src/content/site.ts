@@ -46,34 +46,42 @@ export const IDEAS_TEXT =
   "Har du en god idé til en aktivitet, et event eller noget, du gerne vil dele med fællesskabet? Vi er altid åbne for input og hjælper gerne med at få dine idéer ud i livet.";
 
 export const ABOUT_TEXT =
-  "Kupéen er mere end bare et café-lignende sted. Udover et varieret udvalg af drikkevarer, tilbyder Kupéen en lang række aktiviteter, der appellerer til både musikelskere, kreative sjæle og brætspilsfanatikere. Åbn en dør:";
+  "Kupéen er mere end bare et café-lignende sted. Udover et varieret udvalg af drikkevarer, tilbyder Kupéen en lang række aktiviteter, der appellerer til både musikelskere, kreative sjæle og brætspilsfanatikere. Vælg en kupé, så kører toget den frem til perronen:";
 
-/** »Vælg din kupé«: what Kupéen offers, one compartment each. */
+/**
+ * »Vælg din kupé«: what Kupéen offers, one carriage each. `short` stands on the carriage's sign, `title` and `text` in
+ * the box below when that carriage is at the platform.
+ */
 export const OFFERS = [
   {
+    short: "Vinyl",
     title: "Vinylplader",
     text: "Køb eller lyt til din yndlingsmusik på klassiske vinylplader. Kupéen sætter fokus på den nostalgiske lyd og den unikke atmosfære, som kun vinyl kan give.",
-    colour: "var(--tomato)",
+    colour: "var(--sky)",
   },
   {
+    short: "Krea",
     title: "Kreative aktiviteter",
     text: "Er du til DIY-projekter eller ønsker at udfolde din kreative side, så er Kupéen det perfekte sted. Der er jævnligt workshops og aktiviteter, hvor du kan lave alt fra maleri til håndarbejde og meget mere.",
     colour: "var(--gold)",
   },
   {
+    short: "Brætspil",
     title: "Brætspilscafé",
     text: "Kupéen er også hjem for en hyggelig brætspilscafé, hvor du kan udfordre vennerne eller møde nye mennesker til en omgang spil. Der er spil for alle smag og aldre, og stemningen er altid uformel og sjov.",
     colour: "var(--pink)",
   },
   {
+    short: "Musik",
     title: "Musik og koncerter",
     text: "Kupéen byder også på live musik og koncerter, hvor vi har særlig fokus på at skabe platform for lokale talenter, hvilket giver stedet en ekstra energi og en mulighed for at opleve nye musikgenrer.",
-    colour: "var(--cream)",
+    colour: "var(--teal)",
   },
   {
+    short: "Bingo & stand-up",
     title: "Musikbingo, stand-up, højskolesange og alt muligt andet",
     text: "For dem der elsker lidt sjov og fællesskab, er musikbingo og fællessang en fast del af Kupéens tilbud. Her kan man både få rørt lattermusklerne og synge sammen med andre – en oplevelse, der styrker fællesskabet.",
-    colour: "var(--gold)",
+    colour: "var(--lilac)",
   },
 ];
 

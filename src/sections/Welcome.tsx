@@ -1,13 +1,10 @@
-import { WhistleIcon } from "../components/Icons";
 import { Kicker } from "../components/Kicker";
-import { Train, useTrain } from "../components/Train";
 import { WELCOME_TEXT } from "../content/site";
 import type { Departure } from "../lib/board";
 import { departureText } from "../lib/dates";
 
-/** Perron 1: welcome, and the train that leaves on the whistle. */
+/** Section 1: welcome, with the next event. (The train now runs in »Om os«, where its carriages can be picked.) */
 export function Welcome({ number, next }: { number: number; next: Departure | null }) {
-  const train = useTrain();
   return (
     <section id="forside" className="welcome">
       <div className="wrap welcome-grid">
@@ -31,15 +28,7 @@ export function Welcome({ number, next }: { number: number; next: Departure | nu
             <li>FOR nærområdet – og alle andre</li>
           </ul>
         </div>
-        <div className="welcome-side">
-          <button type="button" className="whistle" onClick={train.toggle}>
-            <WhistleIcon />
-            {train.running ? "Stop toget" : "Fløjt afgang!"}
-          </button>
-          <div className="whistle-note">Toget holder ved perronen. Tryk på fløjten, så kører det.</div>
-        </div>
       </div>
-      <Train trainRef={train.ref} moving={train.moving} />
     </section>
   );
 }

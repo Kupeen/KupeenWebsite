@@ -1,11 +1,16 @@
 import { useState, type CSSProperties } from "react";
 import { Kicker } from "../components/Kicker";
+import { KupeTrain } from "../components/KupeTrain";
 import { ABOUT_TEXT, OFFERS } from "../content/site";
 
-/** Perron 6, »Vælg din kupé«: a carriage with one door per thing Kupéen offers. */
+/**
+ * »Om os« / »Vælg din kupé«: a train with one carriage per thing Kupéen offers. Picking a carriage (or »Forrige« and
+ * »Næste« below) drives it to the platform, and its description shows under the track.
+ */
 export function About({ number }: { number: number }) {
-  const [door, setDoor] = useState(0);
-  const shown = OFFERS[door];
+  const [chosen, setChosen] = useState(0);
+  const shown = OFFERS[chosen];
+  const step = (by: number) => setChosen((i) => (i + by + OFFERS.length) % OFFERS.length);
   return (
     <section id="om-os" className="wrap about">
       <Kicker number={number} colour="var(--cream)">
@@ -15,34 +20,22 @@ export function About({ number }: { number: number }) {
         Vælg din kupé
       </h2>
       <p className="lead">{ABOUT_TEXT}</p>
-      <div className="carriage-scroll">
-        <div className="carriage">
-          {OFFERS.map((offer, i) => (
-            <button
-              key={offer.title}
-              type="button"
-              className="compartment"
-              aria-pressed={i === door}
-              onClick={() => setDoor(i)}
-              style={{ "--colour": offer.colour } as CSSProperties}
-            >
-              <span className="compartment-door">{i + 1}</span>
-              <span className="compartment-title">{offer.title}</span>
-            </button>
-          ))}
-          <div className="carriage-wheel" aria-hidden="true" style={{ left: 60 }} />
-          <div className="carriage-wheel" aria-hidden="true" style={{ left: 110 }} />
-          <div className="carriage-wheel" aria-hidden="true" style={{ right: 110 }} />
-          <div className="carriage-wheel" aria-hidden="true" style={{ right: 60 }} />
-        </div>
-      </div>
+      <KupeTrain kupeer={OFFERS} chosen={chosen} onChoose={setChosen} />
       <div className="compartment-shown" aria-live="polite" style={{ "--colour": shown.colour } as CSSProperties}>
-        <span aria-hidden="true">{door + 1}</span>
+        <span aria-hidden="true">{chosen + 1}</span>
         <div>
           <h3>
-            Kupé {door + 1} · {shown.title}
+            Kupé {chosen + 1} · {shown.title}
           </h3>
           <p>{shown.text}</p>
+        </div>
+        <div className="kupe-steps">
+          <button type="button" onClick={() => step(-1)} aria-label="Forrige kupé">
+            ‹ Forrige
+          </button>
+          <button type="button" onClick={() => step(1)} aria-label="Næste kupé">
+            Næste ›
+          </button>
         </div>
       </div>
     </section>
