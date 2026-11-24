@@ -15,7 +15,7 @@ export function Welcome({ number, next }: { number: number; next: Departure | nu
           <Kicker number={number} colour="var(--tomato)">
             {next ? (
               <>
-                NÆSTE AFGANG <span className="blink">{departureText(next.start)}</span>
+                NÆSTE ARRANGEMENT <span className="blink">{departureText(next.start)}</span>
               </>
             ) : (
               <>VELKOMMEN</>
