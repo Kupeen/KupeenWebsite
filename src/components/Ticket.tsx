@@ -14,7 +14,7 @@ export function Ticket({ departure, open, onToggle }: { departure: Departure; op
     <div className="ticket">
       <div className="ticket-hole" aria-hidden="true" />
       <div className="ticket-hole right" aria-hidden="true" />
-      <div className="ticket-kind">BILLET · ENKELTREJSE</div>
+      <div className="ticket-kind">BILLET</div>
       <h3 className="ticket-route">Kupéen → {departure.title}</h3>
       <div className="ticket-perforation" aria-hidden="true" />
       <div className="ticket-body">
@@ -57,7 +57,7 @@ export function Ticket({ departure, open, onToggle }: { departure: Departure; op
           )}
         </div>
       </div>
-      <div className="ticket-note">Klik på en afgang på tavlen herunder for at skrive billetten ud.</div>
+      <div className="ticket-note">Klik på en afgang på tavlen herunder for at se detaljerne.</div>
     </div>
   );
 }
