@@ -48,10 +48,12 @@ button {
   font: inherit;
 }
 
+/* `clip`, not `hidden`: it cuts off the train as it drives out at the sides just the same, but does not make the page
+   a scroll box of its own, which would stop the header from staying at the top. */
 .page {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .wrap {
@@ -165,22 +167,37 @@ main:focus {
   font: 700 15px/1.55 var(--mono);
 }
 
-/* ---- Header: the station sign, the clock and the menu ---- */
+/* ---- Header: the station sign and the menu, staying at the top while the page scrolls ---- */
 
+/* Below the photo viewer (40) and the skip link (100), above everything on the page. */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   background: var(--ink);
   border-bottom: 6px solid var(--tomato);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* A jump to a section stops below the header, not under it. Header.tsx measures the height. */
+html {
+  scroll-padding-top: var(--header-height, 0px);
 }
 
 /* Narrow screens: the sign on top, the menu below it. */
 .header-bar {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 10px 16px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 24px;
+  gap: 8px 24px;
+}
+
+.header-bar nav {
+  flex: 1 1 100%;
+  min-width: 0;
 }
 
 .sign {
@@ -190,31 +207,35 @@ main:focus {
   padding-bottom: 12px;
 }
 
-/* Wider screens: the menu on the left, the sign on the right of the same line. Where the line is too short for
-   every button, the menu takes two rows and the sign stays on the right. (The sign comes first in the HTML, so
-   screen readers still meet »Skørping« before the menu.) */
+/* Small on phones, so the header takes little of the screen. */
+.sign img {
+  display: block;
+  width: 170px;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 3px 0 #2c3038, 0 8px 16px rgba(0, 0, 0, 0.55);
+}
+
+/* Wider screens: the menu on the left, the sign on the right of the same line. (The sign comes first in the HTML,
+   so screen readers still meet »Skørping« before the menu.) */
 @media (min-width: 900px) {
   .header-bar {
     flex-wrap: nowrap;
+    padding: 14px 24px;
   }
 
   .header-bar nav {
     flex: 1 1 auto;
-    min-width: 0;
   }
 
   .sign {
     order: 1;
   }
-}
 
-/* As tall as the menu buttons, so the line stays low. */
-.sign img {
-  display: block;
-  width: 240px;
-  max-width: 100%;
-  height: auto;
-  box-shadow: 0 3px 0 #2c3038, 0 8px 16px rgba(0, 0, 0, 0.55);
+  /* As tall as the menu buttons, so the line stays low. */
+  .sign img {
+    width: 240px;
+  }
 }
 
 .sign-rail {
@@ -243,14 +264,32 @@ main:focus {
   bottom: -2px;
 }
 
+/* Always one row. When the buttons do not fit, the row scrolls sideways (swipe, or Tab moves through it) and fades
+   out on the right as a hint. The padding gives the focus ring room inside the scrolling row. */
 .menu {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: -6px;
+  padding: 6px;
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   font: 700 14px/1.55 var(--mono);
+}
+
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu li {
+  flex: none;
+}
+
+.menu.overflows {
+  padding-right: 40px;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
 }
 
 .menu a {
