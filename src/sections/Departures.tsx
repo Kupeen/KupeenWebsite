@@ -8,7 +8,6 @@ import { groupByMonth, type Departure } from "../lib/board";
 
 /** Section 2: the ticket for the event picked, and below it the departure board with every coming event. */
 export function Departures({ number, departures }: { number: number; departures: Loaded<Departure[]> }) {
-  const [rollKey, setRollKey] = useState(0);
   const [pickedId, setPickedId] = useState<string | null>(null);
   const [ticketOpen, setTicketOpen] = useState(false);
   const [picks, setPicks] = useState(0);
@@ -48,11 +47,6 @@ export function Departures({ number, departures }: { number: number; departures:
         <h2 className="heading" style={{ color: "var(--gold)" }}>
           Arrangementer i Kupéen
         </h2>
-        {list.length > 0 && (
-          <button type="button" className="outline-button" onClick={() => setRollKey((k) => k + 1)}>
-            ↻ Rul tavlen
-          </button>
-        )}
       </div>
       <div className="departures-stack">
         {picked && (
@@ -64,7 +58,6 @@ export function Departures({ number, departures }: { number: number; departures:
           months={months}
           selectedId={picked?.id ?? null}
           onPick={pick}
-          rollKey={rollKey}
           message={message}
           note="Åbningstider: Følger arrangementer."
         />

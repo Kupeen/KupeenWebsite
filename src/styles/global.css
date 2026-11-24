@@ -608,12 +608,21 @@ html {
   cursor: pointer;
 }
 
+/* Right above the board: the month buttons on the left, »Rul tavlen« on the right of the same line. */
+.board-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 14px;
+}
+
 .months {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-bottom: 14px;
   font: 700 14px/1.55 var(--mono);
 }
 

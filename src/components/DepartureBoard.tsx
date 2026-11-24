@@ -14,15 +14,15 @@ interface Props {
   months: BoardMonth[];
   selectedId: string | null;
   onPick: (departure: Departure) => void;
-  /** Changes when »Rul tavlen« is pressed: the tiles roll again. */
-  rollKey: number;
   /** Shown instead of rows while loading, after a failure or when there is nothing. */
   message?: ReactNode;
   /** A line under the board, after the scroll hint (the opening hours). */
   note?: ReactNode;
 }
 
-export function DepartureBoard({ months, selectedId, onPick, rollKey, message, note }: Props) {
+export function DepartureBoard({ months, selectedId, onPick, message, note }: Props) {
+  // Goes up when »Rul tavlen« is pressed: the tiles roll again.
+  const [rollKey, setRollKey] = useState(0);
   const departures = useMemo(() => months.flatMap((m) => m.departures), [months]);
   const narrow = useMediaQuery("(max-width: 720px)");
   const rows = useMemo(() => {
@@ -72,16 +72,22 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message, n
   let rowIndex = -1;
   return (
     <div>
+      {/* Right above the board: the months to jump to, and on the right »Rul tavlen«. */}
       {months.length > 0 && (
-        <nav className="months" aria-label="Spring til en måned">
-          <span className="months-label">SPRING TIL</span>
-          {months.map((m) => (
-            <button key={m.key} type="button" className="month-button" aria-current={m.key === shownMonth ? "true" : "false"} onClick={() => jumpTo(m)}>
-              {m.tab}
-              <small>{m.departures.length}</small>
-            </button>
-          ))}
-        </nav>
+        <div className="board-toolbar">
+          <nav className="months" aria-label="Spring til en måned">
+            <span className="months-label">SPRING TIL</span>
+            {months.map((m) => (
+              <button key={m.key} type="button" className="month-button" aria-current={m.key === shownMonth ? "true" : "false"} onClick={() => jumpTo(m)}>
+                {m.tab}
+                <small>{m.departures.length}</small>
+              </button>
+            ))}
+          </nav>
+          <button type="button" className="outline-button" onClick={() => setRollKey((k) => k + 1)}>
+            ↻ Rul tavlen
+          </button>
+        </div>
       )}
       <div className="board-frame">
         <div ref={board} className="board" onScroll={onScroll} tabIndex={0} role="region" aria-label="Afgangstavlen, rul ned for at se alle afgange">
