@@ -9,27 +9,21 @@ export interface MenuItem {
   number: number;
 }
 
-/** The old station sign that hangs in Kupéen, and the menu: one »perron« per section. */
+/**
+ * One line: the old station sign that hangs in Kupéen, then the menu, one »perron« per section. On narrow screens
+ * the menu wraps below the sign.
+ */
 export function Header({ menu, current, onPick }: { menu: MenuItem[]; current: SectionId; onPick: (id: SectionId) => void }) {
   return (
     <header className="site-header">
-      <div className="header-top">
-        <div className="brand">
-          <div className="sign">
-            {/* The lettering is traced from a photo of the sign; the worn navy enamel is drawn. */}
-            <img src={signImage} alt="Skørping" width={360} height={60} />
-            <div className="sign-rail" aria-hidden="true" />
-            <div className="sign-bolt" aria-hidden="true" />
-            <div className="sign-bolt right" aria-hidden="true" />
-          </div>
-          <div className="brand-sub">
-            VENTESAL · KIOSK
-            <br />
-            KULTURHUS · 9520
-          </div>
+      <div className="header-bar">
+        <div className="sign">
+          {/* The lettering is traced from a photo of the sign; the worn navy enamel is drawn. */}
+          <img src={signImage} alt="Skørping" width={360} height={60} />
+          <div className="sign-rail" aria-hidden="true" />
+          <div className="sign-bolt" aria-hidden="true" />
+          <div className="sign-bolt right" aria-hidden="true" />
         </div>
-      </div>
-      <div className="header-menu">
         <nav aria-label="Hovedmenu">
           <ul className="menu">
             {menu.map((item) => (
