@@ -57,7 +57,7 @@ export function Ticket({ departure, open, onToggle }: { departure: Departure; op
           )}
         </div>
       </div>
-      <div className="ticket-note">Klik på en afgang på tavlen for at skrive billetten ud.</div>
+      <div className="ticket-note">Klik på en afgang på tavlen herunder for at skrive billetten ud.</div>
     </div>
   );
 }
