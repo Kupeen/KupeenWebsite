@@ -47,18 +47,17 @@ export function KupeTrain({ kupeer, chosen, onChoose }: { kupeer: Kupe[]; chosen
     return () => observer.disconnect();
   }, [place]);
 
-  // A carriage out of view that gets keyboard focus is driven into view, so focus is never on something unseen.
+  // A carriage out of view (or under the faded ends and the arrows) that gets keyboard focus is driven into view, so
+  // focus is never on something unseen.
   const onFocus = (index: number, element: HTMLElement) => {
     const box = track.current?.getBoundingClientRect();
     const own = element.getBoundingClientRect();
-    if (box && index !== chosen && (own.left < box.left || own.right > box.right)) onChoose(index);
+    const edge = 72; // the faded end of the track, with its arrow
+    if (box && index !== chosen && (own.left < box.left + edge || own.right > box.right - edge)) onChoose(index);
   };
 
   return (
     <div ref={track} className="kupe-track">
-      <div className="kupe-platform" aria-hidden="true">
-        PERRON
-      </div>
       <div ref={train} className={moving ? "train running" : "train"} onTransitionEnd={() => setMoving(false)}>
         <div className="car engine" aria-hidden="true" style={{ background: "var(--tomato)" }}>
           <div className="puff" />

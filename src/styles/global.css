@@ -97,7 +97,6 @@ button {
 .featured :focus-visible,
 .ticket-form :focus-visible,
 .receipt :focus-visible,
-.compartment-shown :focus-visible,
 .loudspeaker :focus-visible {
   outline-color: var(--ink);
 }
@@ -1536,36 +1535,98 @@ a.photo-button {
   padding-top: 64px;
 }
 
-/* The train for »Vælg din kupé«: the track is a window onto it; the chosen carriage stands in the middle, under the
-   platform sign. `clip`, not `hidden`, so the browser never scrolls the window itself to a focused carriage. */
+/* The train for »Vælg din kupé«. The stage holds the track and the two arrows; the train fades out at both ends, as
+   if the track ran on out of sight, and the arrows sit on those faded ends, always in the same place. */
+.kupe-stage {
+  position: relative;
+  margin-top: 8px;
+}
+
+.kupe-stage::before,
+.kupe-stage::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 90px;
+  pointer-events: none;
+}
+
+.kupe-stage::before {
+  left: 0;
+  background: linear-gradient(to right, var(--night) 15%, transparent);
+}
+
+.kupe-stage::after {
+  right: 0;
+  background: linear-gradient(to left, var(--night) 15%, transparent);
+}
+
+/* The window onto the train: the chosen carriage stands in the middle. It cuts off the train at the sides only, so
+   the smoke can rise freely; `clip`, not `hidden`, so the browser never scrolls the window itself to a focused
+   carriage. */
 .kupe-track {
   position: relative;
   height: 200px;
-  margin-top: 8px;
-  overflow: clip;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
-.kupe-platform {
+/* At the height of the carriages (the track is 200 px, the carriages 96 px tall, 34 px above its bottom). */
+.kupe-arrow {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 2px 10px;
-  border-radius: 6px;
+  top: 92px;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border: 4px solid var(--ink);
+  border-radius: 50%;
   background: var(--gold);
   color: var(--ink);
-  font: 700 11px/1.5 var(--mono);
-  letter-spacing: 0.16em;
+  font: 400 30px/1 var(--display);
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
 }
 
-.kupe-platform::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  margin-left: -7px;
-  border: 7px solid transparent;
-  border-top-color: var(--gold);
+.kupe-arrow:hover {
+  background: var(--cream);
+}
+
+.kupe-arrow.previous {
+  left: 8px;
+}
+
+.kupe-arrow.next {
+  right: 8px;
+}
+
+/* Phones: narrower faded ends and smaller arrows, so the chosen carriage in the middle stays clear of both. */
+@media (max-width: 720px) {
+  .kupe-stage::before,
+  .kupe-stage::after {
+    width: 36px;
+  }
+
+  .kupe-arrow {
+    top: 96px;
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .kupe-arrow.previous {
+    left: 0;
+  }
+
+  .kupe-arrow.next {
+    right: 0;
+  }
+
+  .car.kupe {
+    min-width: 150px;
+  }
 }
 
 .car.kupe {
@@ -1583,7 +1644,7 @@ a.photo-button {
   background: #fff;
 }
 
-/* The carriage at the platform stands a little higher, with its sign lit. */
+/* The chosen carriage, in the middle, stands a little higher, with its sign lit. */
 .car.kupe[aria-pressed="true"] {
   transform: translateY(-8px);
 }
@@ -1606,24 +1667,30 @@ a.photo-button {
   font-size: 20px;
 }
 
-.kupe-steps {
-  display: flex;
-  gap: 8px;
+/* The descriptions all share one grid cell: the hidden ones only give the box the height of the longest, so the box
+   and everything below it stay put when another kupé is picked. */
+.kupe-info {
+  display: grid;
+  margin-top: 12px;
 }
 
-.kupe-steps button {
-  min-height: 44px;
-  padding: 0 16px;
-  border: 3px solid var(--ink);
-  border-radius: 10px;
-  background: transparent;
-  color: var(--ink);
-  font: 700 15px/1 var(--mono);
-  cursor: pointer;
+.kupe-info > * {
+  grid-area: 1 / 1;
 }
 
-.kupe-steps button:hover {
-  background: var(--colour);
+/* The box is as tall as the longest text: its content stays at the top, the extra room at the bottom. */
+.kupe-info .compartment-shown {
+  margin-top: 0;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.kupe-info-shown {
+  display: grid;
+}
+
+.kupe-card-size {
+  visibility: hidden;
 }
 
 .compartment-shown {
