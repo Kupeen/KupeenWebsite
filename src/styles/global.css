@@ -353,26 +353,108 @@ html {
   color: var(--colour);
 }
 
-/* ---- Forside: welcome and the next event ---- */
+/* ---- Forside: the facade across the hero, the welcome on a yellow card over it ---- */
 
 .welcome {
   position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 560px;
+  padding: 56px 0;
   background: var(--gold);
   color: var(--ink);
-  padding: 56px 0 64px;
+  overflow: clip;
   scroll-margin-top: 0;
 }
 
-.welcome-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  align-items: flex-end;
+/* The photo fills the hero; the crop keeps the »Kupéen holder ÅBENT« board in view, right of the card. */
+.welcome-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 62%;
 }
 
-.welcome-main {
-  flex: 999 1 560px;
-  min-width: 0;
+/* A soft shade on the left, under the card, so its edge stands out against the bricks. */
+.welcome::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(13, 21, 38, 0.55), rgba(13, 21, 38, 0) 60%);
+  pointer-events: none;
+}
+
+.welcome-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.welcome-card {
+  max-width: 600px;
+  padding: 32px 34px 30px;
+  background: var(--gold);
+  border: 5px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.welcome-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* The hero's two buttons, a little larger than the usual ones. */
+.solid-button.big,
+.line-button.big {
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.solid-button.big {
+  border: 3px solid var(--ink);
+}
+
+.welcome-address {
+  margin: 18px 0 0;
+  font: 700 13px/1.5 var(--mono);
+  letter-spacing: 0.06em;
+}
+
+/* Medium widths: a narrower card, so the chalkboard in the photo stays clear of it. */
+@media (min-width: 721px) and (max-width: 1150px) {
+  .welcome-card {
+    max-width: 480px;
+  }
+}
+
+/* Phones: the photo is a strip above the card, which overlaps it a little. */
+@media (max-width: 720px) {
+  .welcome {
+    display: block;
+    min-height: 0;
+    padding: 0 0 32px;
+  }
+
+  .welcome-photo {
+    position: static;
+    height: 240px;
+  }
+
+  .welcome::after {
+    display: none;
+  }
+
+  .welcome-card {
+    margin-top: -40px;
+    padding: 24px 22px;
+  }
 }
 
 .welcome .kicker {
@@ -386,7 +468,7 @@ html {
   margin: 12px 0 18px;
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(44px, 7vw, 96px);
+  font-size: clamp(36px, 5vw, 64px);
   line-height: 0.95;
 }
 
@@ -397,26 +479,8 @@ html {
 
 .welcome-text {
   margin: 0;
-  max-width: 680px;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
-}
-
-.chips {
-  list-style: none;
-  margin: 22px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font: 700 14px/1.55 var(--mono);
-}
-
-.chips li {
-  padding: 8px 14px;
-  border: 3px solid var(--ink);
-  border-radius: 999px;
-  background: var(--cream);
 }
 
 .whistle {

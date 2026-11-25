@@ -20,7 +20,7 @@ export const SECTIONS: { id: SectionId; label: string; colour: string }[] = [
 ];
 
 export const WELCOME_TEXT =
-  "Kupéen er et lokalt mødested i hjertet af Skørping – af, med og for nærområdet. Det hele drives af frivillige: naboer, der står i baren, rigger lyden til og fylder kalenderen med koncerter, strik, quiz og brætspil. Og alle er velkomne ombord, også dig, der bare kommer forbi.";
+  "Et lokalt mødested i hjertet af Skørping, drevet af frivillige: koncerter, strik, quiz og brætspil – og en bar med øl, vin, te og kaffe. Alle er velkomne ombord.";
 
 /** The train's carriages, behind the engine: each carries one thing Kupéen is about, on a sign of its own colour. */
 export const CARRIAGES = [
