@@ -7,14 +7,16 @@ export const INSTAGRAM_URL = "https://www.instagram.com/kupeenskorping/";
 export const CONTACT_EMAIL = "kulturrebild@gmail.com";
 export const ADDRESS = { street: "Sverriggårdsvej 3", zip: "9520", town: "Skørping" };
 
-/** The page's sections in order. Each is a »perron« with its own colour; the photo section only shows with photos. */
-export type SectionId = "forside" | "aktiviteter" | "nyheder" | "billeder" | "frivillig" | "om-os" | "bliv-medlem";
+/**
+ * The page's sections in order, each with its own colour; the photo section only shows with photos. The volunteers
+ * are part of »Om os« (anchor #frivillig), not a menu entry of their own.
+ */
+export type SectionId = "forside" | "aktiviteter" | "nyheder" | "billeder" | "om-os" | "bliv-medlem";
 
 export const SECTIONS: { id: SectionId; label: string; colour: string }[] = [
   { id: "forside", label: "Forside", colour: "var(--tomato)" },
   { id: "aktiviteter", label: "Aktiviteter", colour: "var(--gold)" },
   { id: "nyheder", label: "Nyheder", colour: "var(--pink)" },
-  { id: "frivillig", label: "Frivillig", colour: "var(--teal)" },
   { id: "billeder", label: "Billeder", colour: "var(--sky)" },
   { id: "om-os", label: "Om os", colour: "var(--cream)" },
   { id: "bliv-medlem", label: "Bliv medlem", colour: "var(--lilac)" },

@@ -2,10 +2,12 @@ import { useState, type CSSProperties } from "react";
 import { Kicker } from "../components/Kicker";
 import { KupeTrain } from "../components/KupeTrain";
 import { ABOUT_TEXT, OFFERS } from "../content/site";
+import { Volunteers } from "./Volunteers";
 
 /**
- * »Om os« / »Vælg din kupé«: a train with one carriage per thing Kupéen offers. Picking a carriage, or the arrows at
- * the ends of the track, drives it to the middle, and its description shows under the track.
+ * »Om os« in two parts. First »Vælg din kupé«: a train with one carriage per thing Kupéen offers; picking a carriage,
+ * or the arrows at the ends of the track, drives it to the middle, and its description shows under the track. Then
+ * the volunteers who run it all.
  */
 export function About({ number }: { number: number }) {
   const [chosen, setChosen] = useState(0);
@@ -39,6 +41,7 @@ export function About({ number }: { number: number }) {
           <KupeCard index={chosen} offer={OFFERS[chosen]} />
         </div>
       </div>
+      <Volunteers />
     </section>
   );
 }

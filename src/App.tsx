@@ -12,7 +12,6 @@ import { Loudspeaker } from "./sections/Loudspeaker";
 import { Membership } from "./sections/Membership";
 import { News, type OpenNewsRequest } from "./sections/News";
 import { Photos } from "./sections/Photos";
-import { Volunteers } from "./sections/Volunteers";
 import { Welcome } from "./sections/Welcome";
 
 export function App() {
@@ -58,8 +57,8 @@ export function App() {
           <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
           <News number={numberOf("nyheder")} news={news} openRequest={newsRequest} />
-          <Volunteers number={numberOf("frivillig")} />
           {photos.length > 0 && <Photos number={numberOf("billeder")} photos={photos} />}
+          {/* »Om os« also holds the volunteers (#frivillig). */}
           <About number={numberOf("om-os")} />
           <Membership number={numberOf("bliv-medlem")} />
         </main>

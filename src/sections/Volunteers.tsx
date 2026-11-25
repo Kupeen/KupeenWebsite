@@ -1,17 +1,17 @@
 import type { CSSProperties } from "react";
-import { Kicker } from "../components/Kicker";
 import { AF_MED_FOR, CONTACT_EMAIL, IDEAS_TEXT, VOLUNTEER_TEXT } from "../content/site";
 
-/** »Frivillig«: everyone on the train staff is a volunteer. */
-export function Volunteers({ number }: { number: number }) {
+/**
+ * The second part of »Om os«: everyone on the train staff is a volunteer. Not a section of its own (no menu entry),
+ * but it keeps the anchor #frivillig, and #gode-ideer for the old site's address.
+ */
+export function Volunteers() {
   return (
-    <section id="frivillig" className="wrap volunteers">
-      <Kicker number={number} colour="var(--teal)">
-        FRIVILLIG
-      </Kicker>
-      <h2 className="heading" style={{ color: "var(--teal)", marginBottom: 24 }}>
+    <div id="frivillig" className="volunteers">
+      <p className="volunteers-label">FRIVILLIG</p>
+      <h3 className="heading" style={{ color: "var(--teal)", marginBottom: 24 }}>
         Hele togpersonalet er frivillige
-      </h2>
+      </h3>
       <div className="volunteers-text">
         <p>{VOLUNTEER_TEXT}</p>
         <div className="af-med-for">
@@ -24,11 +24,11 @@ export function Volunteers({ number }: { number: number }) {
           ))}
         </div>
         <div id="gode-ideer" className="ideas">
-          <h3>Gode ideer? Din idé!</h3>
+          <h4>Gode ideer? Din idé!</h4>
           <p>{IDEAS_TEXT}</p>
           <a href={`mailto:${CONTACT_EMAIL}`}>Kontakt os</a>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -1552,10 +1552,17 @@ a.photo-button {
   border-bottom: 6px solid var(--ink);
 }
 
-/* ---- Frivillig ---- */
+/* ---- Frivillig: the second part of »Om os« ---- */
 
 .volunteers {
-  padding-top: 72px;
+  margin-top: 88px;
+}
+
+.volunteers-label {
+  margin: 0 0 10px;
+  font: 700 14px/1.5 var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--teal);
 }
 
 .volunteers-text {
@@ -1611,7 +1618,7 @@ a.photo-button {
   transform: rotate(-0.6deg);
 }
 
-.ideas h3 {
+.ideas h4 {
   margin: 0 0 8px;
   font-family: var(--display);
   font-weight: 400;
