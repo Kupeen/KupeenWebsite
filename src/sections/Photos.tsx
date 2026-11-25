@@ -5,8 +5,8 @@ import { Kicker } from "../components/Kicker";
 import { useLightbox } from "../components/Lightbox";
 
 /**
- * Perron 4, »Udsigt fra kupéen«: the gallery album's photos glide past like the view from a train window. Only shown
- * when the album has photos.
+ * »Billeder«, between »Frivillig« and »Om os«: the gallery album's photos glide past like the view from a train
+ * window. Only shown when the album has photos.
  */
 export function Photos({ number, photos }: { number: number; photos: GalleryPhoto[] }) {
   const lightbox = useLightbox();

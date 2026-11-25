@@ -4,6 +4,7 @@
 
 const HOUR = 3600;
 const DAY = 24 * HOUR;
+export const WEEK = 7 * DAY;
 
 /**
  * How long the CDN keeps an error. A missing picture: 5 minutes, so an old address that is asked for again and again
@@ -24,13 +25,16 @@ export function jsonResponse(data: unknown): Response {
   });
 }
 
-/** A picture: kept a day by the CDN and by browsers. */
-export function pictureResponse(type: string, bytes: Uint8Array<ArrayBuffer>): Response {
+/**
+ * A picture: kept a day by the CDN, and by browsers for `browserSeconds` (a day unless said otherwise). A gallery
+ * photo never changes under its address, so browsers may keep it a week; an event's cover can be changed, so a day.
+ */
+export function pictureResponse(type: string, bytes: Uint8Array<ArrayBuffer>, browserSeconds = DAY): Response {
   return new Response(bytes, {
     headers: {
       "Content-Type": type,
       "Content-Length": String(bytes.length),
-      "Cache-Control": `public, max-age=${DAY}`,
+      "Cache-Control": `public, max-age=${browserSeconds}`,
       "Netlify-CDN-Cache-Control": `public, durable, max-age=${DAY}, stale-while-revalidate=${7 * DAY}`,
       "X-Content-Type-Options": "nosniff",
     },

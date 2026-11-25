@@ -14,8 +14,8 @@ export const SECTIONS: { id: SectionId; label: string; colour: string }[] = [
   { id: "forside", label: "Forside", colour: "var(--tomato)" },
   { id: "aktiviteter", label: "Aktiviteter", colour: "var(--gold)" },
   { id: "nyheder", label: "Nyheder", colour: "var(--pink)" },
-  { id: "billeder", label: "Billeder", colour: "var(--sky)" },
   { id: "frivillig", label: "Frivillig", colour: "var(--teal)" },
+  { id: "billeder", label: "Billeder", colour: "var(--sky)" },
   { id: "om-os", label: "Om os", colour: "var(--cream)" },
   { id: "bliv-medlem", label: "Bliv medlem", colour: "var(--lilac)" },
 ];

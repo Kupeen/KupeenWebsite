@@ -58,8 +58,8 @@ export function App() {
           <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
           <News number={numberOf("nyheder")} news={news} openRequest={newsRequest} />
+          <Volunteers number={numberOf("frivillig")} />
           {photos.length > 0 && <Photos number={numberOf("billeder")} photos={photos} />}
-          <Volunteers number={numberOf("frivillig")} photo={photos[0] ?? null} />
           <About number={numberOf("om-os")} />
           <Membership number={numberOf("bliv-medlem")} />
         </main>

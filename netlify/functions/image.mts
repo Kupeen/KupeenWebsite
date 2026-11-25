@@ -1,6 +1,6 @@
 // GET /api/image/…: a picture from Facebook passed through our server (see ../lib/images.ts for the addresses).
 import type { Config } from "@netlify/functions";
-import { errorResponse, pictureResponse } from "../lib/http";
+import { errorResponse, pictureResponse, WEEK } from "../lib/http";
 import { fetchPicture, findImageSource } from "../lib/images";
 import { imageSources } from "../lib/sources";
 
@@ -17,7 +17,8 @@ export default async (req: Request) => {
 
   try {
     const picture = await fetchPicture(source);
-    return pictureResponse(picture.type, picture.bytes);
+    // Gallery photos (/api/image/photo/…) never change under their address: browsers keep them a week.
+    return pictureResponse(picture.type, picture.bytes, path.startsWith("/api/image/photo/") ? WEEK : undefined);
   } catch (err) {
     console.error(`Image ${path}: ${(err as Error).message}`);
     return errorResponse(502, "Could not load the picture");
