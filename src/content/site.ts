@@ -3,6 +3,7 @@
 import type { MembershipType } from "../lib/membership";
 
 export const FACEBOOK_PAGE_URL = "https://www.facebook.com/profile.php?id=100088983360099";
+export const INSTAGRAM_URL = "https://www.instagram.com/kupeenskorping/";
 export const CONTACT_EMAIL = "kulturrebild@gmail.com";
 export const ADDRESS = { street: "Sverriggårdsvej 3", zip: "9520", town: "Skørping" };
 

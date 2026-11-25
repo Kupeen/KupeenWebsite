@@ -53,8 +53,8 @@ export function PrivacyPage() {
         <h2>Når du bruger hjemmesiden</h2>
         <p>
           Hjemmesiden sætter ingen cookies og bruger ingen statistik- eller sporingsværktøjer. Arrangementer, nyheder og billeder kommer fra
-          Kupéens Facebook-side, men hentes gennem vores egen server, så din browser ikke kontakter Facebook. Klikker du på et link til Facebook,
-          gælder Metas egne regler derfra.
+          Kupéens Facebook-side, men hentes gennem vores egen server, så din browser ikke kontakter Facebook. Klikker du på et link til Facebook
+          eller Instagram, gælder Metas egne regler derfra.
         </p>
         <p>
           Som alle webhoteller registrerer Netlify tekniske oplysninger som din IP-adresse, når siden hentes, for at kunne levere og beskytte den.
