@@ -355,11 +355,16 @@ html {
 
 /* ---- Forside: the facade across the hero, the welcome on a yellow card over it ---- */
 
+/* At least the whole screen below the header (Header.tsx measures it), so the next section starts below the fold.
+   `svh` is the screen height with a phone's browser bars showing, so the hero does not jump when they hide; `vh`
+   first for browsers without it. A short screen (a phone turned sideways) lets the hero grow to fit the card. */
 .welcome {
   position: relative;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  min-height: 560px;
+  min-height: calc(100vh - var(--header-height, 86px));
+  min-height: calc(100svh - var(--header-height, 86px));
   padding: 56px 0;
   background: var(--gold);
   color: var(--ink);
@@ -386,9 +391,11 @@ html {
   pointer-events: none;
 }
 
+/* Full width including its side padding, so the card never runs past the screen edge. */
 .welcome-inner {
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
   width: 100%;
 }
 
@@ -434,26 +441,51 @@ html {
   }
 }
 
-/* Phones: the photo is a strip above the card, which overlaps it a little. */
+/* Phones: the photo above the card, which overlaps it a little. The photo takes whatever height the card leaves of
+   the screen (at least 200 px), so photo and card together fill it. */
 @media (max-width: 720px) {
   .welcome {
-    display: block;
-    min-height: 0;
-    padding: 0 0 32px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 0 24px;
   }
 
   .welcome-photo {
     position: static;
-    height: 240px;
+    flex: 1 0 200px;
+    min-height: 200px;
+    height: auto;
   }
 
   .welcome::after {
     display: none;
   }
 
+  /* A compact card, so photo and card fit an ordinary phone screen together. */
   .welcome-card {
     margin-top: -40px;
-    padding: 24px 22px;
+    padding: 20px 18px;
+  }
+
+  .welcome .welcome-text {
+    font-size: 17px;
+  }
+
+  .welcome-buttons {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .solid-button.big,
+  .line-button.big {
+    min-height: 46px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  .welcome-address {
+    margin-top: 14px;
+    font-size: 11px;
   }
 }
 
