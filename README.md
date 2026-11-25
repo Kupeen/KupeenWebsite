@@ -39,6 +39,7 @@ src/lib/             logic without React, with tests: Danish dates, the board, n
 src/content/site.ts  the fixed texts: welcome, volunteers, »Vælg din kupé«, the membership cards, contact details
 src/styles/          the stylesheet, colours first
 index.html           the page's shell
+privatliv.html       the privacy page's shell (/privatliv; src/privacy.tsx, src/pages/PrivacyPage.tsx)
 netlify.toml         Netlify's build settings
 ```
 
@@ -53,7 +54,7 @@ Debugger read the page again.
 
 Dates are always shown in Danish time, whatever the visitor's own time zone. The board drops an event once it is over
 by the visitor's clock (Facebook's end time, or three hours after the start). The photo section only shows when
-`FB_GALLERY_ALBUM_ID` is set and the album has photos; the menu and the »perron« numbers follow.
+`FB_GALLERY_ALBUM_ID` is set and the album has photos; the menu and the section numbers follow.
 
 ## Running it locally
 
@@ -105,10 +106,20 @@ next month; it never sends a bill. What uses credits, and what the site does abo
 Netlify emails the account owner at 50 %, 75 % and 100 % of the month's credits; the account's usage page shows what
 each day used.
 
+## The membership form
+
+Sign-ups go to Netlify Forms (form `medlemskab`): Netlify keeps them under the project's »Forms« and emails each one
+to the club. The form is drawn by JavaScript, so Netlify learns its name and fields from the plain copy in
+`public/forms.html`; a new field must be added there and in `src/lib/membership.ts`. A hidden field catches robots,
+and Netlify filters the rest for spam. On Netlify, once:
+
+1. Forms → »Enable form detection«, then deploy again (Netlify finds forms while it builds).
+2. Forms → Submission notifications → add an email notification to the club's address. The mail comes from
+   formresponses@netlify.com; answering it writes to the applicant.
+
+Locally (`npm run dev`) there is no Netlify Forms, so »Send« says the sign-up could not be sent.
+
 ## Not done yet
 
-- The membership form checks what is typed but does not send it anywhere yet: »Send« asks people to write to the club
-  by email instead. How sign-ups should reach the club is still to be decided; `sendApplication` in
-  `src/lib/membership.ts` is the one place to connect it, and the receipt is ready for when it is.
 - The site still tells search engines to skip it (`noindex` in `index.html`). Remove that when it goes live on
   kupeen9520.dk.

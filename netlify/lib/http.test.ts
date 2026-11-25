@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { errorResponse, jsonResponse, pictureResponse } from "./http";
+import { errorResponse, jsonResponse, pictureResponse, WEEK } from "./http";
 
 const cdn = (res: Response) => res.headers.get("Netlify-CDN-Cache-Control");
 const browser = (res: Response) => res.headers.get("Cache-Control");
@@ -15,6 +15,12 @@ test("pictures are kept a day by the CDN and by browsers", () => {
   expect(cdn(res)).toBe("public, durable, max-age=86400, stale-while-revalidate=604800");
   expect(browser(res)).toBe("public, max-age=86400");
   expect(res.headers.get("Content-Length")).toBe("3");
+});
+
+test("a gallery photo may stay a week in the browser; the CDN still keeps it a day", () => {
+  const res = pictureResponse("image/jpeg", new Uint8Array([1]), WEEK);
+  expect(browser(res)).toBe("public, max-age=604800");
+  expect(cdn(res)).toBe("public, durable, max-age=86400, stale-while-revalidate=604800");
 });
 
 test("the CDN keeps a missing picture five minutes and a Facebook failure one minute; browsers keep neither", async () => {

@@ -134,8 +134,8 @@ export function tileAt(char: string, row: number, column: number, time: number |
 export const tilesAt = (text: string, row: number, column: number, time: number | null) =>
   Array.from(text).map((char, j) => tileAt(char, row, column + j, time));
 
-/** The columns where the board's three texts start: time, date, title. */
-export const COLUMNS = { time: 0, date: 5, title: 10 } as const;
+/** The columns where the board's three texts start: date, time, title. */
+export const COLUMNS = { date: 0, time: 5, title: 10 } as const;
 
 /** When the last tile of these rows has settled, plus a short pause. */
 export function rollDuration(rows: { time: string; date: string; title: string }[]): number {

@@ -10,9 +10,8 @@ import { Footer } from "./sections/Footer";
 import { Header, type MenuItem } from "./sections/Header";
 import { Loudspeaker } from "./sections/Loudspeaker";
 import { Membership } from "./sections/Membership";
-import { News } from "./sections/News";
+import { News, type OpenNewsRequest } from "./sections/News";
 import { Photos } from "./sections/Photos";
-import { Volunteers } from "./sections/Volunteers";
 import { Welcome } from "./sections/Welcome";
 
 export function App() {
@@ -30,7 +29,7 @@ export function App() {
   const photos = gallery.state === "ready" ? gallery.data : [];
   const newsList = news.state === "ready" ? news.data : [];
 
-  // The photo section is left out while the album is empty; the menu and the »perron« numbers follow what is shown.
+  // The photo section is left out while the album is empty; the menu and the section numbers follow what is shown.
   const menu = useMemo<MenuItem[]>(
     () => SECTIONS.filter((s) => s.id !== "billeder" || photos.length > 0).map((s, i) => ({ ...s, number: i + 1 })),
     [photos.length],
@@ -39,25 +38,32 @@ export function App() {
   const [current, setCurrent] = useCurrentSection(menu);
   useJumpToSection(events.state !== "loading" && newsAnswer.state !== "loading" && gallery.state !== "loading");
 
+  // A headline in the loudspeaker opens its post in the news section.
+  const [newsRequest, setNewsRequest] = useState<OpenNewsRequest | null>(null);
+  const openNews = (id: string) => {
+    setCurrent("nyheder");
+    setNewsRequest((previous) => ({ id, n: (previous?.n ?? 0) + 1 }));
+  };
+
   return (
     <LightboxProvider>
       <div className="page">
+        {/* The first thing a keyboard reaches: past the sign and the menu, straight to the page. */}
+        <a className="skip-link" href="#indhold">
+          Spring til indholdet
+        </a>
         <Header menu={menu} current={current} onPick={setCurrent} />
-        <main>
-          <Welcome
-            number={numberOf("forside")}
-            next={departures.state === "ready" ? (departures.data[0] ?? null) : null}
-            latest={newsList[0] ?? null}
-            onNews={() => setCurrent("nyheder")}
-          />
+        <main id="indhold" tabIndex={-1}>
+          <Welcome number={numberOf("forside")} next={departures.state === "ready" ? (departures.data[0] ?? null) : null} />
           <Departures number={numberOf("aktiviteter")} departures={departures} />
-          {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} />}
-          <News number={numberOf("nyheder")} news={news} />
+          <News number={numberOf("nyheder")} news={news} openRequest={newsRequest} />
           {photos.length > 0 && <Photos number={numberOf("billeder")} photos={photos} />}
-          <Volunteers number={numberOf("frivillig")} photo={photos[0] ?? null} />
+          {/* »Om os« also holds the volunteers (#frivillig). */}
           <About number={numberOf("om-os")} />
           <Membership number={numberOf("bliv-medlem")} />
         </main>
+        {/* The headlines run past at the very bottom, right on top of the footer. */}
+        {newsList.length > 0 && <Loudspeaker news={newsList} onNews={() => setCurrent("nyheder")} onOpen={openNews} />}
         <Footer />
       </div>
     </LightboxProvider>

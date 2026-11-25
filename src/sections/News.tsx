@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Loaded } from "../api";
 import { CameraIcon, ChevronIcon, PlayIcon } from "../components/Icons";
 import { Kicker } from "../components/Kicker";
@@ -11,21 +11,50 @@ import { flatten, teaser } from "../lib/text";
 /** Without »Vis ældre nyheder«: the featured post and the three after it. */
 const FIRST_SHOWN = 4;
 
-/** Perron 3: the Facebook Page's latest posts that count as news. */
-export function News({ number, news }: { number: number; news: Loaded<NewsItem[]> }) {
+/** The id of a post's article on the page, so a headline elsewhere (the loudspeaker) can lead to it. */
+export const newsAnchor = (id: string) => `nyhed-${id}`;
+
+/** Asks the news section to open a post and go to it; `n` makes a second request for the same post count too. */
+export interface OpenNewsRequest {
+  id: string;
+  n: number;
+}
+
+/** Section 3: the Facebook Page's latest posts that count as news. */
+export function News({ number, news, openRequest }: { number: number; news: Loaded<NewsItem[]>; openRequest: OpenNewsRequest | null }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [goTo, setGoTo] = useState<OpenNewsRequest | null>(null);
   const list = news.state === "ready" ? news.data : [];
   const [featured, ...rest] = list;
   const toggle = (id: string) => setOpenId((current) => (current === id ? null : id));
 
+  // A headline was picked elsewhere: open that post, show the older posts if it is one of them, and then go to it.
+  useEffect(() => {
+    if (!openRequest) return;
+    setOpenId(openRequest.id);
+    if (list.findIndex((item) => item.id === openRequest.id) >= FIRST_SHOWN) setShowAll(true);
+    setGoTo(openRequest);
+    // Only a new request does this, not a new list (`list` is left out of the dependencies on purpose).
+  }, [openRequest]);
+
+  // After the post has opened, so it is scrolled to at its full length. Focus follows, for keyboard and screen readers.
+  useEffect(() => {
+    if (!goTo) return;
+    const article = document.getElementById(newsAnchor(goTo.id));
+    if (!article) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    article.scrollIntoView({ block: "start", behavior: still ? "instant" : "smooth" });
+    article.focus({ preventScroll: true });
+  }, [goTo]);
+
   return (
     <section id="nyheder" className="wrap news">
       <Kicker number={number} colour="var(--pink)">
-        PERRON {number} · NYHEDER
+        NYHEDER
       </Kicker>
       <h2 className="heading" style={{ color: "var(--pink)", marginBottom: 8 }}>
-        Nyt fra perronen
+        Nyt fra Kupéen
       </h2>
       <p className="lead">Det seneste fra Kupéens Facebook-side: billeder fra koncerter og fester, tak for sidst og hvad der er på vej.</p>
 
@@ -69,7 +98,7 @@ function Featured({ item, open, onToggle }: { item: NewsItem; open: boolean; onT
   const { text, canExpand } = useText(item, open);
   const showPhotos = (index = 0) => lightbox(item.title, item.photos, index);
   return (
-    <article className="featured">
+    <article id={newsAnchor(item.id)} className="featured" tabIndex={-1}>
       {item.photos.length > 0 && (
         <div className="featured-media">
           <button type="button" className="photo-button featured-cover" onClick={() => showPhotos()} aria-label={`Se ${photoCount(item.photos.length)} fra ${item.title}`}>
@@ -132,7 +161,7 @@ function NewsCard({ item, open, onToggle }: { item: NewsItem; open: boolean; onT
   const lightbox = useLightbox();
   const { text, canExpand } = useText(item, open);
   return (
-    <article className="news-card">
+    <article id={newsAnchor(item.id)} className="news-card" tabIndex={-1}>
       {item.photos.length > 0 && (
         <button type="button" className="photo-button" onClick={() => lightbox(item.title, item.photos)} aria-label={`Se ${photoCount(item.photos.length)} fra ${item.title}`}>
           <img src={item.photos[0].src} alt={item.photos[0].caption} loading="lazy" />

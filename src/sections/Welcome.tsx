@@ -1,57 +1,56 @@
-import { WhistleIcon } from "../components/Icons";
 import { Kicker } from "../components/Kicker";
-import { Train, useTrain } from "../components/Train";
-import { WELCOME_TEXT } from "../content/site";
+import { ADDRESS, WELCOME_TEXT } from "../content/site";
+import facadeLarge from "../images/hero-facade-1600.webp";
+import facadeSmall from "../images/hero-facade-800.webp";
 import type { Departure } from "../lib/board";
 import { departureText } from "../lib/dates";
-import type { NewsItem } from "../lib/news";
 
-/** Perron 1: welcome, the latest news, and the train that leaves on the whistle. */
-export function Welcome({ number, next, latest, onNews }: { number: number; next: Departure | null; latest: NewsItem | null; onNews: () => void }) {
-  const train = useTrain();
-  const cover = latest ? (latest.photos[0]?.src ?? latest.videoStill) : null;
+/**
+ * Section 1: Kupéen's facade with the »Kupéen holder ÅBENT – kig ind!« board across the whole hero, and the welcome
+ * on a yellow card over it: the next event, two ways in, and where to find the house. On phones the photo is a strip
+ * above the card.
+ */
+export function Welcome({ number, next }: { number: number; next: Departure | null }) {
   return (
     <section id="forside" className="welcome">
-      <div className="wrap welcome-grid">
-        <div className="welcome-main">
+      <img
+        className="welcome-photo"
+        src={facadeLarge}
+        srcSet={`${facadeSmall} 800w, ${facadeLarge} 1600w`}
+        sizes="100vw"
+        width={1600}
+        height={900}
+        fetchPriority="high"
+        alt="Kupéens gule murstensfacade på Sverriggårdsvej. På fortovet står en tavle: Kupéen holder åbent – kig ind!"
+      />
+      <div className="wrap welcome-inner">
+        <div className="welcome-card">
           <Kicker number={number} colour="var(--tomato)">
             {next ? (
               <>
-                PERRON {number} · NÆSTE AFGANG <span className="blink">{departureText(next.start)}</span>
+                NÆSTE ARRANGEMENT <span className="blink">{departureText(next.start)}</span>
               </>
             ) : (
-              <>PERRON {number} · VELKOMMEN</>
+              <>VELKOMMEN</>
             )}
           </Kicker>
           <h1>
             Velkommen <span>ombord</span> i Kupéen
           </h1>
           <p className="welcome-text">{WELCOME_TEXT}</p>
-          <ul className="chips" aria-label="Kupéen er">
-            <li>AF nærområdet</li>
-            <li>MED nærområdet</li>
-            <li>FOR nærområdet – og alle andre</li>
-          </ul>
-        </div>
-        <div className="welcome-side">
-          {latest && (
-            <a className="latest" href="#nyheder" onClick={onNews}>
-              {cover && <img src={cover} alt="" />}
-              <span style={{ minWidth: 0 }}>
-                <span className="latest-label">SENESTE NYT · {latest.date}</span>
-                <span className="latest-title">{latest.title}</span>
-                <span className="latest-more">{latest.photos.length > 0 ? "Læs og se billederne ↓" : "Læs mere ↓"}</span>
-              </span>
+          <div className="welcome-buttons">
+            <a className="solid-button big" href="#aktiviteter">
+              Se arrangementer
             </a>
-          )}
-          <button type="button" className="whistle" onClick={train.toggle}>
-            <WhistleIcon />
-            {train.running ? "Stop toget" : "Fløjt afgang!"}
-          </button>
-          <div className="whistle-note">Toget holder ved perronen. Tryk på fløjten, så kører det.</div>
+            <a className="line-button big" href="#bliv-medlem">
+              Bliv medlem
+            </a>
+          </div>
+          <p className="welcome-address">
+            {ADDRESS.street.toUpperCase()} · {ADDRESS.zip} {ADDRESS.town.toUpperCase()} · VED STATIONEN
+          </p>
         </div>
       </div>
-      <Train trainRef={train.ref} moving={train.moving} />
     </section>
   );
 }

@@ -14,13 +14,15 @@ interface Props {
   months: BoardMonth[];
   selectedId: string | null;
   onPick: (departure: Departure) => void;
-  /** Changes when »Rul tavlen« is pressed: the tiles roll again. */
-  rollKey: number;
   /** Shown instead of rows while loading, after a failure or when there is nothing. */
   message?: ReactNode;
+  /** A line under the board, after the scroll hint (the opening hours). */
+  note?: ReactNode;
 }
 
-export function DepartureBoard({ months, selectedId, onPick, rollKey, message }: Props) {
+export function DepartureBoard({ months, selectedId, onPick, message, note }: Props) {
+  // Goes up when »Rul tavlen« is pressed: the tiles roll again.
+  const [rollKey, setRollKey] = useState(0);
   const departures = useMemo(() => months.flatMap((m) => m.departures), [months]);
   const narrow = useMediaQuery("(max-width: 720px)");
   const rows = useMemo(() => {
@@ -70,23 +72,29 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
   let rowIndex = -1;
   return (
     <div>
+      {/* Right above the board: the months to jump to, and on the right »Rul tavlen«. */}
       {months.length > 0 && (
-        <nav className="months" aria-label="Spring til en måned">
-          <span className="months-label">SPRING TIL</span>
-          {months.map((m) => (
-            <button key={m.key} type="button" className="month-button" aria-current={m.key === shownMonth ? "true" : "false"} onClick={() => jumpTo(m)}>
-              {m.tab}
-              <small>{m.departures.length}</small>
-            </button>
-          ))}
-        </nav>
+        <div className="board-toolbar">
+          <nav className="months" aria-label="Spring til en måned">
+            <span className="months-label">SPRING TIL</span>
+            {months.map((m) => (
+              <button key={m.key} type="button" className="month-button" aria-current={m.key === shownMonth ? "true" : "false"} onClick={() => jumpTo(m)}>
+                {m.tab}
+                <small>{m.departures.length}</small>
+              </button>
+            ))}
+          </nav>
+          <button type="button" className="outline-button" onClick={() => setRollKey((k) => k + 1)}>
+            ↻ Rul tavlen
+          </button>
+        </div>
       )}
       <div className="board-frame">
         <div ref={board} className="board" onScroll={onScroll} tabIndex={0} role="region" aria-label="Afgangstavlen, rul ned for at se alle afgange">
           <div className="board-inner">
             <div className="board-head" aria-hidden="true">
-              <span>TID</span>
               <span>DATO</span>
+              <span>TID</span>
               <span className="board-head-title">AFGANG MOD</span>
               <span>STATUS</span>
             </div>
@@ -101,6 +109,8 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
                   rowIndex += 1;
                   const row = rows[rowIndex];
                   const i = rowIndex;
+                  // An event with a ticket link sells tickets; one without counts as free.
+                  const status = departure.ticketUrl ? "KØB BILLET" : "GRATIS";
                   return (
                     <button
                       key={departure.id}
@@ -108,14 +118,14 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
                       className="board-row"
                       data-first-of={j === 0 ? month.key : undefined}
                       aria-pressed={departure.id === selectedId}
-                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}`}
+                      aria-label={`${departure.title}, ${row.date} kl. ${row.time}, ${status.toLowerCase()}`}
                       onClick={() => onPick(departure)}
                     >
                       <span className="tiles">
-                        <Tiles tiles={tilesAt(row.time, i, COLUMNS.time, time)} />
+                        <Tiles tiles={tilesAt(row.date, i, COLUMNS.date, time)} />
                       </span>
                       <span className="tiles">
-                        <Tiles tiles={tilesAt(row.date, i, COLUMNS.date, time)} />
+                        <Tiles tiles={tilesAt(row.time, i, COLUMNS.time, time)} />
                       </span>
                       <span className="board-title">
                         <span
@@ -130,7 +140,7 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
                         </span>
                       </span>
                       <span className="board-status" style={{ color: departure.ticketUrl ? "var(--tomato)" : "var(--teal)" }}>
-                        {departure.ticketUrl ? "KØB BILLET" : "TIL TIDEN"}
+                        {status}
                       </span>
                     </button>
                   );
@@ -141,7 +151,12 @@ export function DepartureBoard({ months, selectedId, onPick, rollKey, message }:
         </div>
         {departures.length > ROWS_IN_VIEW && !atEnd && <div className="board-fade" aria-hidden="true" />}
       </div>
-      {departures.length > ROWS_IN_VIEW && <div className="board-hint">Rul ned i tavlen for at se alle {departures.length} afgange.</div>}
+      {(departures.length > ROWS_IN_VIEW || note) && (
+        <div className="board-hint">
+          {departures.length > ROWS_IN_VIEW && `Rul ned i tavlen for at se alle ${departures.length} afgange. `}
+          {note}
+        </div>
+      )}
     </div>
   );
 }

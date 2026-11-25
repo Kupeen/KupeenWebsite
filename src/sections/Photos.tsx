@@ -5,8 +5,8 @@ import { Kicker } from "../components/Kicker";
 import { useLightbox } from "../components/Lightbox";
 
 /**
- * Perron 4, »Udsigt fra kupéen«: the gallery album's photos glide past like the view from a train window. Only shown
- * when the album has photos.
+ * »Billeder«, between »Frivillig« and »Om os«: the gallery album's photos glide past like the view from a train
+ * window. Only shown when the album has photos.
  */
 export function Photos({ number, photos }: { number: number; photos: GalleryPhoto[] }) {
   const lightbox = useLightbox();
@@ -17,11 +17,13 @@ export function Photos({ number, photos }: { number: number; photos: GalleryPhot
   return (
     <section id="billeder" className="photos">
       <div className="wrap">
-        <Kicker number={number} colour="var(--sky)" inverted>
-          PERRON {number} · BILLEDER
+        <Kicker number={number} colour="var(--sky)">
+          BILLEDER
         </Kicker>
         <div className="photos-head">
-          <h2 className="heading">Udsigt fra kupéen</h2>
+          <h2 className="heading" style={{ color: "var(--sky)" }}>
+            Udsigt fra kupéen
+          </h2>
           <div className="photos-buttons">
             <button type="button" onClick={() => setPaused(!paused)} aria-pressed={paused}>
               {paused ? "▶ Kør videre" : "❚❚ Stop udsigten"}

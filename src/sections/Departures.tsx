@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Loaded } from "../api";
 import { DepartureBoard } from "../components/DepartureBoard";
 import { Kicker } from "../components/Kicker";
@@ -6,11 +6,12 @@ import { Ticket } from "../components/Ticket";
 import { FACEBOOK_PAGE_URL } from "../content/site";
 import { groupByMonth, type Departure } from "../lib/board";
 
-/** Perron 2: the departure board with every coming event, and the ticket for the one picked. */
+/** Section 2: the ticket for the event picked, and below it the departure board with every coming event. */
 export function Departures({ number, departures }: { number: number; departures: Loaded<Departure[]> }) {
-  const [rollKey, setRollKey] = useState(0);
   const [pickedId, setPickedId] = useState<string | null>(null);
   const [ticketOpen, setTicketOpen] = useState(false);
+  const [picks, setPicks] = useState(0);
+  const ticket = useRef<HTMLDivElement>(null);
 
   const list = useMemo(() => (departures.state === "ready" ? departures.data : []), [departures]);
   const months = useMemo(() => groupByMonth(list), [list]);
@@ -18,7 +19,19 @@ export function Departures({ number, departures }: { number: number; departures:
   const pick = (departure: Departure) => {
     if (departure.id !== picked?.id) setTicketOpen(false);
     setPickedId(departure.id);
+    setPicks((n) => n + 1);
   };
+
+  // The ticket is above the board. When a row far down the board is picked (on a phone, say), the ticket has scrolled
+  // out of sight under the header: bring it back, so the pick visibly does something.
+  useEffect(() => {
+    const box = ticket.current;
+    if (!picks || !box) return;
+    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 0;
+    if (box.getBoundingClientRect().top >= header) return;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    box.scrollIntoView({ block: "start", behavior: still ? "instant" : "smooth" });
+  }, [picks]);
 
   let message = null;
   if (departures.state === "loading") message = "HENTER AFGANGE …";
@@ -28,26 +41,26 @@ export function Departures({ number, departures }: { number: number; departures:
   return (
     <section id="aktiviteter" className="wrap departures">
       <Kicker number={number} colour="var(--gold)">
-        PERRON {number} · AKTIVITETER
+        AKTIVITETER
       </Kicker>
       <div className="departures-head">
         <h2 className="heading" style={{ color: "var(--gold)" }}>
-          Afgange fra Kupéen
+          Arrangementer i Kupéen
         </h2>
-        {list.length > 0 && (
-          <button type="button" className="outline-button" onClick={() => setRollKey((k) => k + 1)}>
-            ↻ Rul tavlen
-          </button>
-        )}
       </div>
       <div className="departures-stack">
-        <DepartureBoard months={months} selectedId={picked?.id ?? null} onPick={pick} rollKey={rollKey} message={message} />
-        {picked && <Ticket departure={picked} open={ticketOpen} onToggle={() => setTicketOpen((open) => !open)} />}
-        <div className="timetable-note">
-          <strong>KØREPLAN · ÅBNINGSTIDER</strong>
-          <span>Åbningstiderne følger events.</span>
-          <a href={FACEBOOK_PAGE_URL}>Se Kupéens Facebook-side for en opdateret kalender</a>
-        </div>
+        {picked && (
+          <div ref={ticket}>
+            <Ticket departure={picked} open={ticketOpen} onToggle={() => setTicketOpen((open) => !open)} />
+          </div>
+        )}
+        <DepartureBoard
+          months={months}
+          selectedId={picked?.id ?? null}
+          onPick={pick}
+          message={message}
+          note="Åbningstider: Følger arrangementer."
+        />
       </div>
     </section>
   );

@@ -20,6 +20,12 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# The privacy page is privatliv.html; its address is /privatliv (200: shown there, not redirected).
+[[redirects]]
+  from = "/privatliv"
+  to = "/privatliv.html"
+  status = 200
+
 # The site that was on kupeen9520.dk before had one page per subject. Its addresses live on in search results and old
 # posts, so each leads to the matching section of this page (301: moved for good). The page itself scrolls to the
 # section named after the #, see useJumpToSection in src/App.tsx.

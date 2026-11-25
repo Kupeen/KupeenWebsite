@@ -5,7 +5,8 @@ import { getJson, graphUrl, parseFacebookDate, type FacebookConfig } from "./fac
 import type { GalleryPhoto, Picture } from "./types";
 
 const FIELDS = "id,created_time,name,images";
-const PHOTOS_TO_READ = 60;
+// Enough for the strip; each photo shown costs bandwidth (about 70 KB in the strip, 150 KB in the viewer).
+const PHOTOS_TO_READ = 20;
 const SMALL_WIDTH = 640; // the strip shows pictures about 300 px wide; twice that stays sharp
 const LARGE_WIDTH = 1600; // the photo viewer
 

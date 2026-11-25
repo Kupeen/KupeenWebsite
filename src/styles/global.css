@@ -9,6 +9,7 @@
   --board-hover: #1b2a48;
   --cream: #fff4dc;
   --tomato: #ff5a36;
+  --tomato-on-gold: #c8361a;
   --gold: #ffc93c;
   --pink: #ff8fb1;
   --teal: #2ec4b6;
@@ -47,10 +48,12 @@ button {
   font: inherit;
 }
 
+/* `clip`, not `hidden`: it cuts off the train as it drives out at the sides just the same, but does not make the page
+   a scroll box of its own, which would stop the header from staying at the top. */
 .page {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .wrap {
@@ -75,11 +78,50 @@ button {
   100% { transform: translateX(0); opacity: 1; }
 }
 
+/* Blinks a few times to catch the eye, then stays still (moving content may not go on and on). */
 .blink {
-  animation: blink 1s steps(2) infinite;
+  animation: blink 1s steps(2) 6;
 }
 
-/* ---- Section headings: »PERRON n · NAME« and the title ---- */
+/* ---- Keyboard: a visible focus ring everywhere, and a way past the header ---- */
+
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* On the light grounds teal is too pale; ink stands out there. */
+.welcome :focus-visible,
+.lost :focus-visible,
+.ticket :focus-visible,
+.featured :focus-visible,
+.ticket-form :focus-visible,
+.receipt :focus-visible,
+.loudspeaker :focus-visible {
+  outline-color: var(--ink);
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ---- Section headings: the number and name, and the title ---- */
 
 .kicker {
   display: flex;
@@ -125,42 +167,110 @@ button {
   font: 700 15px/1.55 var(--mono);
 }
 
-/* ---- Header: the station sign, the clock and the menu ---- */
+/* ---- Header: the station sign and the menu, staying at the top while the page scrolls ---- */
 
+/* Below the photo viewer (40) and the skip link (100), above everything on the page. */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   background: var(--ink);
   border-bottom: 6px solid var(--tomato);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
-.header-top {
+/* A jump to a section stops below the header, not under it. Header.tsx measures the height. */
+html {
+  scroll-padding-top: var(--header-height, 0px);
+}
+
+/* Narrow screens: the sign on top, the menu below it. */
+.header-bar {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 18px 24px 0;
+  padding: 10px 16px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  gap: 8px 24px;
 }
 
-.brand {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
+.header-bar nav {
+  flex: 1 1 100%;
+  min-width: 0;
 }
 
+/* The sign is a link to the start, like a logo: it brightens a little when pointed at. */
 .sign {
   position: relative;
-  padding-bottom: 14px;
+  display: block;
+  flex: none;
+  max-width: 100%;
+  padding-bottom: 12px;
+  border-radius: 4px;
 }
 
+.sign:hover img {
+  filter: brightness(1.15);
+}
+
+/* Small on phones, so the header takes little of the screen. */
 .sign img {
   display: block;
-  width: 360px;
+  width: 170px;
   max-width: 100%;
   height: auto;
   box-shadow: 0 3px 0 #2c3038, 0 8px 16px rgba(0, 0, 0, 0.55);
+}
+
+/* Two short lines beside the sign; on phones to its right, on wider screens just left of it. */
+.tagline {
+  flex: none;
+  margin: 0 0 10px;
+  font: 700 10px/1.5 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Narrow phones: a little closer to the sign and a little smaller, so it still fits beside it. */
+@media (max-width: 420px) {
+  .header-bar {
+    column-gap: 12px;
+  }
+
+  .tagline {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Wider screens: the menu on the left, then the tagline and the sign on the right of the same line. (The sign and
+   the tagline come first in the HTML, so screen readers still meet »Skørping« before the menu.) */
+@media (min-width: 900px) {
+  .header-bar {
+    flex-wrap: nowrap;
+    padding: 14px 24px;
+  }
+
+  .header-bar nav {
+    flex: 1 1 auto;
+  }
+
+  .tagline {
+    order: 1;
+    margin-right: -10px;
+    text-align: right;
+  }
+
+  .sign {
+    order: 2;
+  }
+
+  /* As tall as the menu buttons, so the line stays low. */
+  .sign img {
+    width: 240px;
+  }
 }
 
 .sign-rail {
@@ -176,71 +286,45 @@ button {
 .sign-bolt {
   position: absolute;
   bottom: 0;
-  left: 46px;
-  width: 13px;
-  height: 13px;
+  left: 13%;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #e3d6b1, #8f7d52 70%);
 }
 
 .sign-bolt.right {
   left: auto;
-  right: 64px;
+  right: 18%;
   bottom: -2px;
 }
 
-.brand-sub {
-  font: 13px/1.3 var(--mono);
-  color: var(--gold);
-}
-
-.clock {
-  position: relative;
-  flex: none;
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: var(--cream);
-  border: 5px solid var(--tomato);
-}
-
-.clock-hand {
-  position: absolute;
-  left: 50%;
-  bottom: 50%;
-  background: var(--ink);
-  transform-origin: 50% 100%;
-}
-
-.clock-hand.hour { width: 5px; height: 20px; margin-left: -2.5px; border-radius: 3px; }
-.clock-hand.minute { width: 3px; height: 28px; margin-left: -1.5px; border-radius: 2px; }
-.clock-hand.second { width: 2px; height: 30px; margin-left: -1px; background: var(--tomato); }
-
-.clock-pin {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: var(--tomato);
-}
-
-.header-menu {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 14px 24px 18px;
-}
-
+/* Always one row. When the buttons do not fit, the row scrolls sideways (swipe, or Tab moves through it) and fades
+   out on the right as a hint. The padding gives the focus ring room inside the scrolling row. */
 .menu {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: -6px;
+  padding: 6px;
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
   font: 700 14px/1.55 var(--mono);
+}
+
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu li {
+  flex: none;
+}
+
+.menu.overflows {
+  padding-right: 40px;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
 }
 
 .menu a {
@@ -248,7 +332,7 @@ button {
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 11px;
   background: var(--panel);
   color: var(--cream);
   border-radius: 8px;
@@ -269,26 +353,140 @@ button {
   color: var(--colour);
 }
 
-/* ---- Forside: welcome, the latest news, the train ---- */
+/* ---- Forside: the facade across the hero, the welcome on a yellow card over it ---- */
 
+/* At least the whole screen below the header (Header.tsx measures it), so the next section starts below the fold.
+   `svh` is the screen height with a phone's browser bars showing, so the hero does not jump when they hide; `vh`
+   first for browsers without it. A short screen (a phone turned sideways) lets the hero grow to fit the card. */
 .welcome {
   position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - var(--header-height, 86px));
+  min-height: calc(100svh - var(--header-height, 86px));
+  padding: 56px 0;
   background: var(--gold);
   color: var(--ink);
-  padding: 56px 0 0;
+  overflow: clip;
   scroll-margin-top: 0;
 }
 
-.welcome-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  align-items: flex-end;
+/* The photo fills the hero; the crop keeps the »Kupéen holder ÅBENT« board in view, right of the card. */
+.welcome-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 62%;
 }
 
-.welcome-main {
-  flex: 999 1 560px;
-  min-width: 0;
+/* A soft shade on the left, under the card, so its edge stands out against the bricks. */
+.welcome::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(13, 21, 38, 0.55), rgba(13, 21, 38, 0) 60%);
+  pointer-events: none;
+}
+
+/* Full width including its side padding, so the card never runs past the screen edge. */
+.welcome-inner {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.welcome-card {
+  max-width: 600px;
+  padding: 32px 34px 30px;
+  background: var(--gold);
+  border: 5px solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.welcome-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* The hero's two buttons, a little larger than the usual ones. */
+.solid-button.big,
+.line-button.big {
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.solid-button.big {
+  border: 3px solid var(--ink);
+}
+
+.welcome-address {
+  margin: 18px 0 0;
+  font: 700 13px/1.5 var(--mono);
+  letter-spacing: 0.06em;
+}
+
+/* Medium widths: a narrower card, so the chalkboard in the photo stays clear of it. */
+@media (min-width: 721px) and (max-width: 1150px) {
+  .welcome-card {
+    max-width: 480px;
+  }
+}
+
+/* Phones: the photo above the card, which overlaps it a little. The photo takes whatever height the card leaves of
+   the screen (at least 200 px), so photo and card together fill it. */
+@media (max-width: 720px) {
+  .welcome {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 0 24px;
+  }
+
+  .welcome-photo {
+    position: static;
+    flex: 1 0 200px;
+    min-height: 200px;
+    height: auto;
+  }
+
+  .welcome::after {
+    display: none;
+  }
+
+  /* A compact card, so photo and card fit an ordinary phone screen together. */
+  .welcome-card {
+    margin-top: -40px;
+    padding: 20px 18px;
+  }
+
+  .welcome .welcome-text {
+    font-size: 17px;
+  }
+
+  .welcome-buttons {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .solid-button.big,
+  .line-button.big {
+    min-height: 46px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  .welcome-address {
+    margin-top: 14px;
+    font-size: 11px;
+  }
 }
 
 .welcome .kicker {
@@ -302,90 +500,19 @@ button {
   margin: 12px 0 18px;
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(44px, 7vw, 96px);
+  font-size: clamp(36px, 5vw, 64px);
   line-height: 0.95;
 }
 
+/* A deeper tomato: the bright one on the yellow ground is too faint to read (contrast 2:1, large text needs 3:1). */
 .welcome h1 span {
-  color: var(--tomato);
+  color: var(--tomato-on-gold);
 }
 
 .welcome-text {
   margin: 0;
-  max-width: 680px;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
-}
-
-.chips {
-  list-style: none;
-  margin: 22px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  font: 700 14px/1.55 var(--mono);
-}
-
-.chips li {
-  padding: 8px 14px;
-  border: 3px solid var(--ink);
-  border-radius: 999px;
-  background: var(--cream);
-}
-
-.welcome-side {
-  flex: 1 1 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.latest {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: var(--ink);
-  color: var(--cream);
-  border-radius: 16px;
-  text-decoration: none;
-  box-shadow: 6px 6px 0 var(--tomato);
-}
-
-.latest img {
-  flex: none;
-  width: 96px;
-  height: 96px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.latest-label {
-  display: block;
-  font: 700 12px/1.55 var(--mono);
-  letter-spacing: 0.1em;
-  color: var(--pink);
-}
-
-.latest-title {
-  display: block;
-  margin-top: 4px;
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.25;
-}
-
-.latest-more {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-  color: var(--gold);
 }
 
 .whistle {
@@ -500,6 +627,28 @@ button {
   width: 60px;
 }
 
+/* A carriage with a word: as wide as its sign needs. */
+.car.word {
+  width: auto;
+  min-width: 130px;
+  padding: 0 18px;
+}
+
+/* The sign on the carriage's side, like a destination board. */
+.car-sign {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 14px;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
 .wheel {
   position: absolute;
   bottom: -18px;
@@ -519,6 +668,43 @@ button {
   border-radius: 50%;
   background: var(--cream);
   animation: puff 1.6s ease-out infinite;
+}
+
+/* ---- Every section at least one screen tall (desktop and tablet) ----
+   A jump from the menu then shows one whole section, not the top of the next one peeking in below it. A section
+   shorter than the screen centres its content in that height; a taller one simply stays as tall as it is. Phones
+   keep their natural heights: their sections are mostly longer than the screen anyway. */
+@media (min-width: 900px) {
+  main > section:not(.welcome) {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - var(--header-height, 86px));
+    min-height: calc(100svh - var(--header-height, 86px));
+  }
+
+  /* A full-width section (the photos) holds its content in an inner .wrap. In a column its `margin: 0 auto` would
+     shrink it to its content and centre it, pushing the heading right; full width keeps it in line with the others. */
+  main > section:not(.welcome) > .wrap {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* A gentle snap: when scrolling stops close to the start of a section, the page settles there (just below the
+     header, through scroll-padding-top). `proximity`, not `mandatory`: away from a start nothing pulls, so the long
+     sections scroll freely. The footer's end is a snap point too, so the very bottom of the page stays reachable. */
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  main > section {
+    scroll-snap-align: start;
+  }
+
+  .site-footer {
+    scroll-snap-align: end;
+  }
 }
 
 /* ---- Aktiviteter: the departure board, the month buttons and the ticket ---- */
@@ -547,12 +733,21 @@ button {
   cursor: pointer;
 }
 
+/* Right above the board: the month buttons on the left, »Rul tavlen« on the right of the same line. */
+.board-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-bottom: 14px;
+}
+
 .months {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-bottom: 14px;
   font: 700 14px/1.55 var(--mono);
 }
 
@@ -729,6 +924,14 @@ button {
 
 .board-title-track.scrolling {
   animation: boardScroll 14s ease-in-out infinite;
+}
+
+/* Moving text holds still while someone points at it or is on it with the keyboard. */
+.board-row:hover .board-title-track,
+.board-row:focus-visible .board-title-track,
+.loudspeaker:hover .marquee,
+.loudspeaker:focus-within .marquee {
+  animation-play-state: paused;
 }
 
 .board-status {
@@ -956,26 +1159,6 @@ button {
   font-size: 13px;
 }
 
-.timetable-note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 24px;
-  padding: 18px 24px;
-  border: 3px dashed var(--gold);
-  border-radius: 16px;
-}
-
-.timetable-note strong {
-  font: 700 13px/1.55 var(--mono);
-  letter-spacing: 0.14em;
-  color: var(--gold);
-}
-
-.timetable-note a {
-  font-weight: 800;
-}
-
 /* ---- Højtaleren: the latest headlines, running past ---- */
 
 .loudspeaker {
@@ -1020,8 +1203,16 @@ button {
   animation: marquee 60s linear infinite;
 }
 
-.marquee span {
-  padding-right: 40px;
+/* Each headline leads to its post; it underlines when pointed at (the strip stands still then). */
+.marquee a {
+  margin-right: 40px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.marquee a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
 }
 
 /* ---- Nyheder ---- */
@@ -1261,12 +1452,9 @@ a.photo-button {
 
 /* ---- Billeder: »Udsigt fra kupéen« ---- */
 
+/* On the page's own dark ground like the other sections; sky blue is its colour (number, heading, buttons). */
 .photos {
-  margin-top: 72px;
-  padding-top: 52px;
-  background: var(--sky);
-  color: var(--ink);
-  border-top: 6px solid var(--ink);
+  padding-top: 64px;
 }
 
 .photos-head {
@@ -1290,27 +1478,29 @@ a.photo-button {
   gap: 8px;
   min-height: 48px;
   padding: 0 20px;
-  border: 3px solid var(--ink);
+  border: 3px solid var(--sky);
   border-radius: 10px;
   background: transparent;
-  color: var(--ink);
+  color: var(--sky);
   font: 700 15px/1 var(--mono);
   cursor: pointer;
 }
 
 .photos-buttons button.dark {
-  background: var(--ink);
-  color: var(--sky);
+  background: var(--sky);
+  color: var(--ink);
 }
 
 .photos .lead {
   margin-bottom: 30px;
 }
 
+/* The train window band the photos glide past: tomato with dark text, on the dark page. */
 .view {
   padding: 28px 0 26px;
   overflow: hidden;
   background: var(--tomato);
+  color: var(--ink);
   border-top: 6px solid var(--ink);
 }
 
@@ -1362,40 +1552,20 @@ a.photo-button {
   border-bottom: 6px solid var(--ink);
 }
 
-/* ---- Frivillig ---- */
+/* ---- Frivillig: the second part of »Om os« ---- */
 
 .volunteers {
-  padding-top: 72px;
+  margin-top: 88px;
 }
 
-.volunteers-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.volunteers figure {
-  flex: 1 1 320px;
-  margin: 0;
-}
-
-.volunteers figure img {
-  display: block;
-  width: 100%;
-  height: 560px;
-  object-fit: cover;
-  border-radius: 22px;
-  border: 4px solid var(--ink);
-}
-
-.volunteers figcaption {
-  margin-top: 10px;
-  font: 13px/1.55 var(--mono);
+.volunteers-label {
+  margin: 0 0 10px;
+  font: 700 14px/1.5 var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--teal);
 }
 
 .volunteers-text {
-  flex: 2 1 520px;
   min-width: 0;
 }
 
@@ -1448,7 +1618,7 @@ a.photo-button {
   transform: rotate(-0.6deg);
 }
 
-.ideas h3 {
+.ideas h4 {
   margin: 0 0 8px;
   font-family: var(--display);
   font-weight: 400;
@@ -1477,69 +1647,161 @@ a.photo-button {
   padding-top: 64px;
 }
 
-.carriage-scroll {
-  overflow-x: auto;
-  padding-bottom: 28px;
-}
-
-.carriage {
+/* The train for »Vælg din kupé«. The stage holds the track and the two arrows; the train fades out at both ends, as
+   if the track ran on out of sight, and the arrows sit on those faded ends, always in the same place. */
+.kupe-stage {
   position: relative;
-  min-width: 900px;
-  display: flex;
-  gap: 10px;
-  padding: 18px;
-  background: var(--teal);
-  border: 5px solid var(--ink);
-  border-radius: 28px 28px 12px 12px;
 }
 
-.compartment {
-  flex: 1;
-  min-height: 190px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 10px;
+.kupe-stage::before,
+.kupe-stage::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 90px;
+  pointer-events: none;
+}
+
+.kupe-stage::before {
+  left: 0;
+  background: linear-gradient(to right, var(--night) 15%, transparent);
+}
+
+.kupe-stage::after {
+  right: 0;
+  background: linear-gradient(to left, var(--night) 15%, transparent);
+}
+
+/* The window onto the train: the chosen carriage stands in the middle. It cuts off the train at the sides only, so
+   the smoke can rise freely; `clip`, not `hidden`, so the browser never scrolls the window itself to a focused
+   carriage. */
+.kupe-track {
+  position: relative;
+  height: 200px;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* At the height of the carriages (the track is 200 px, the carriages 96 px tall, 34 px above its bottom). */
+.kupe-arrow {
+  position: absolute;
+  top: 92px;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
   border: 4px solid var(--ink);
-  border-radius: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--ink);
+  font: 400 30px/1 var(--display);
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.kupe-arrow:hover {
+  background: var(--cream);
+}
+
+.kupe-arrow.previous {
+  left: 8px;
+}
+
+.kupe-arrow.next {
+  right: 8px;
+}
+
+/* Phones: narrower faded ends and smaller arrows, so the chosen carriage in the middle stays clear of both. */
+@media (max-width: 720px) {
+  .kupe-stage::before,
+  .kupe-stage::after {
+    width: 36px;
+  }
+
+  .kupe-arrow {
+    top: 96px;
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .kupe-arrow.previous {
+    left: 0;
+  }
+
+  .kupe-arrow.next {
+    right: 0;
+  }
+
+  .car.kupe {
+    min-width: 150px;
+  }
+}
+
+.car.kupe {
+  width: auto;
+  min-width: 170px;
+  padding: 0 16px;
   background: var(--colour);
   color: var(--ink);
+  font: inherit;
   cursor: pointer;
-  transition: transform 0.25s, background 0.25s;
+  transition: transform 0.3s ease;
 }
 
-.compartment[aria-pressed="true"] {
-  background: var(--cream);
-  transform: translateY(-10px);
+.car.kupe:hover .car-sign {
+  background: #fff;
 }
 
-.compartment-door {
-  width: 64px;
-  height: 76px;
-  border-radius: 32px 32px 8px 8px;
-  border: 4px solid var(--ink);
-  background: var(--cream);
+/* The chosen carriage, in the middle, stands a little higher, with its sign lit. */
+.car.kupe[aria-pressed="true"] {
+  transform: translateY(-8px);
+}
+
+.car.kupe[aria-pressed="true"] .car-sign {
+  background: var(--gold);
+}
+
+.kupe-number {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--display);
-  font-size: 28px;
-}
-
-.compartment-title {
-  font: 700 14px/1.25 var(--mono);
-  text-align: center;
-}
-
-.carriage-wheel {
-  position: absolute;
-  bottom: -20px;
-  width: 34px;
-  height: 34px;
+  flex: none;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--ink);
-  border: 5px solid var(--cream);
+  border: 3px solid var(--ink);
+  background: var(--cream);
+  font-family: var(--display);
+  font-size: 20px;
+}
+
+/* The descriptions all share one grid cell: the hidden ones only give the box the height of the longest, so the box
+   and everything below it stay put when another kupé is picked. */
+.kupe-info {
+  display: grid;
+  margin-top: 12px;
+}
+
+.kupe-info > * {
+  grid-area: 1 / 1;
+}
+
+/* The box is as tall as the longest text: its content stays at the top, the extra room at the bottom. */
+.kupe-info .compartment-shown {
+  margin-top: 0;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.kupe-info-shown {
+  display: grid;
+}
+
+.kupe-card-size {
+  visibility: hidden;
 }
 
 .compartment-shown {
@@ -1869,6 +2131,15 @@ a.photo-button {
   font-weight: 700;
 }
 
+/* The spam trap: off screen for people, still in the form for robots. */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .receipt {
   position: relative;
   margin-top: 36px;
@@ -1933,6 +2204,11 @@ a.photo-button {
 .site-footer {
   margin-top: 80px;
   background: var(--ink);
+}
+
+/* The loudspeaker strip sits right on top of the footer. */
+.loudspeaker + .site-footer {
+  margin-top: 0;
 }
 
 .footer-track {
@@ -2094,6 +2370,147 @@ a.photo-button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* ---- The form's privacy note and the privacy page (/privatliv) ---- */
+
+.form-privacy {
+  margin: 18px 0 0;
+  font-size: 15px;
+}
+
+.form-privacy a {
+  color: inherit;
+}
+
+.privacy {
+  max-width: 760px;
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+
+.privacy .heading {
+  margin: 18px 0 16px;
+  color: var(--gold);
+}
+
+.privacy h2 {
+  margin: 34px 0 8px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.privacy p {
+  margin: 0 0 14px;
+}
+
+.back-link {
+  font-family: var(--mono);
+  font-weight: 700;
+}
+
+.privacy-updated {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ---- The page for addresses that do not exist (404.html): a cancelled departure, and the train ---- */
+
+.lost {
+  background: var(--gold);
+  color: var(--ink);
+  padding-top: 56px;
+}
+
+.lost-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-end;
+}
+
+.lost-main {
+  flex: 999 1 520px;
+  min-width: 0;
+}
+
+.lost-kicker {
+  margin: 0;
+  font: 700 15px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+}
+
+.lost h1 {
+  margin: 12px 0 18px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(40px, 6.5vw, 88px);
+  line-height: 0.95;
+}
+
+.lost h1 span {
+  color: var(--tomato-on-gold);
+}
+
+.lost-text {
+  margin: 0 0 24px;
+  max-width: 640px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.lost-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lost-side {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.lost-board {
+  width: 100%;
+  max-width: 380px;
+  padding: 16px 18px 18px;
+  border-radius: 12px;
+  background: var(--board);
+  color: var(--cream);
+  font-family: var(--mono);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.lost-board-head,
+.lost-board-row {
+  display: grid;
+  grid-template-columns: 7.5em 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.lost-board-head {
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  opacity: 0.75;
+}
+
+.lost-board-row {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lost-status {
+  color: var(--tomato);
+  letter-spacing: 0.08em;
 }
 
 @media (prefers-reduced-motion: reduce) {

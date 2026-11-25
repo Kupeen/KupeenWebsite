@@ -1,4 +1,4 @@
-import { ADDRESS, FACEBOOK_PAGE_URL } from "../content/site";
+import { ADDRESS, FACEBOOK_PAGE_URL, INSTAGRAM_URL } from "../content/site";
 
 export function Footer() {
   return (
@@ -10,6 +10,8 @@ export function Footer() {
           Kupéen • {ADDRESS.street} • {ADDRESS.zip} {ADDRESS.town}
         </span>
         <a href={FACEBOOK_PAGE_URL}>Kupéen på Facebook</a>
+        <a href={INSTAGRAM_URL}>Kupéen på Instagram</a>
+        <a href="/privatliv">Privatlivspolitik</a>
       </div>
     </footer>
   );

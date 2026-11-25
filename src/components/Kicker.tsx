@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-/** »PERRON n · NAME« above a section's title: the number in the section's colour. */
+/** The number and name above a section's title (»③ NYHEDER«): the number in the section's colour, as in the menu. */
 export function Kicker({ number, colour, inverted, children, className }: { number: number; colour: string; inverted?: boolean; children: ReactNode; className?: string }) {
   const circle: Record<string, string> = inverted ? { "--colour": "var(--ink)", color: colour } : { "--colour": colour };
   return (

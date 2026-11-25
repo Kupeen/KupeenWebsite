@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { checkApplication, MEMBERSHIP_TYPES, receiptText, sendApplication, type FieldName } from "./membership";
+import { readFileSync } from "node:fs";
+import { applicationBody, checkApplication, FORM_NAME, HONEYPOT_FIELD, MEMBERSHIP_FIELDS, MEMBERSHIP_TYPES, receiptText, sendApplication, type FieldName } from "./membership";
 
 const filled: Record<FieldName, string> = {
   name: "Mette Kjær",
@@ -37,9 +38,45 @@ describe("the membership form", () => {
     expect(receiptText(young)).toContain("Det er gratis, så der kommer ingen faktura");
   });
 
-  it("does not send anything until a way of sending is chosen", async () => {
+  const application = () => {
     const result = checkApplication(MEMBERSHIP_TYPES[1], (name) => filled[name]);
     if (!("application" in result)) throw new Error("expected an application");
-    expect(await sendApplication(result.application)).toEqual({ sent: false, reason: "not-connected" });
+    return result.application;
+  };
+
+  it("posts the application url-encoded to Netlify Forms, with the form's name and the type with its price", async () => {
+    let request: { url: string; init?: RequestInit } | null = null;
+    const post = (async (url: string, init?: RequestInit) => {
+      request = { url, init };
+      return new Response("", { status: 200 });
+    }) as typeof fetch;
+    expect(await sendApplication(application(), "", post)).toEqual({ sent: true });
+    expect(request!.url).toBe("/");
+    expect(request!.init?.method).toBe("POST");
+    expect(request!.init?.headers).toEqual({ "Content-Type": "application/x-www-form-urlencoded" });
+    const body = new URLSearchParams(String(request!.init?.body));
+    expect(body.get("form-name")).toBe("medlemskab");
+    expect(body.get("type")).toBe("Almindeligt medlem (100 kr.)");
+    expect(body.get("name")).toBe("Mette Kjær");
+    expect(body.get("birthdate")).toBe("1980-05-01");
+    expect(body.get(HONEYPOT_FIELD)).toBe("");
+  });
+
+  it("counts an error answer or no answer as not sent", async () => {
+    const refused = (async () => new Response("", { status: 404 })) as unknown as typeof fetch;
+    const offline = (async () => {
+      throw new TypeError("Failed to fetch");
+    }) as unknown as typeof fetch;
+    expect(await sendApplication(application(), "", refused)).toEqual({ sent: false });
+    expect(await sendApplication(application(), "", offline)).toEqual({ sent: false });
+  });
+
+  it("matches the static copy Netlify detects the form from (public/forms.html)", () => {
+    const html = readFileSync(new URL("../../public/forms.html", import.meta.url), "utf8");
+    expect(html).toContain(`name="${FORM_NAME}"`);
+    expect(html).toContain(`netlify-honeypot="${HONEYPOT_FIELD}"`);
+    const posted = [...new URLSearchParams(applicationBody(application())).keys()].filter((key) => key !== "form-name");
+    for (const field of posted) expect(html).toContain(`name="${field}"`);
+    expect(posted).toEqual(expect.arrayContaining(MEMBERSHIP_FIELDS.map((f) => f.name)));
   });
 });

@@ -3,27 +3,38 @@
 import type { MembershipType } from "../lib/membership";
 
 export const FACEBOOK_PAGE_URL = "https://www.facebook.com/profile.php?id=100088983360099";
+export const INSTAGRAM_URL = "https://www.instagram.com/kupeenskorping/";
 export const CONTACT_EMAIL = "kulturrebild@gmail.com";
 export const ADDRESS = { street: "Sverriggårdsvej 3", zip: "9520", town: "Skørping" };
 
-/** The page's sections in order. Each is a »perron« with its own colour; the photo section only shows with photos. */
-export type SectionId = "forside" | "aktiviteter" | "nyheder" | "billeder" | "frivillig" | "om-os" | "bliv-medlem";
+/**
+ * The page's sections in order, each with its own colour; the photo section only shows with photos. The volunteers
+ * are part of »Om os« (anchor #frivillig), not a menu entry of their own.
+ */
+export type SectionId = "forside" | "aktiviteter" | "nyheder" | "billeder" | "om-os" | "bliv-medlem";
 
 export const SECTIONS: { id: SectionId; label: string; colour: string }[] = [
   { id: "forside", label: "Forside", colour: "var(--tomato)" },
   { id: "aktiviteter", label: "Aktiviteter", colour: "var(--gold)" },
   { id: "nyheder", label: "Nyheder", colour: "var(--pink)" },
   { id: "billeder", label: "Billeder", colour: "var(--sky)" },
-  { id: "frivillig", label: "Frivillig", colour: "var(--teal)" },
   { id: "om-os", label: "Om os", colour: "var(--cream)" },
   { id: "bliv-medlem", label: "Bliv medlem", colour: "var(--lilac)" },
 ];
 
 export const WELCOME_TEXT =
-  "Kupéen er et lokalt mødested i hjertet af Skørping – af, med og for nærområdet. Det hele drives af frivillige: naboer, der står i baren, rigger lyden til og fylder kalenderen med koncerter, strik, quiz og brætspil. Og alle er velkomne ombord, også dig, der bare kommer forbi.";
+  "Et lokalt mødested i hjertet af Skørping, drevet af frivillige: koncerter, strik, quiz og brætspil – og en bar med øl, vin, te og kaffe. Alle er velkomne ombord.";
 
-/** The train's carriages spell the name; each has its own colour. */
-export const CARRIAGE_COLOURS = ["var(--tomato)", "var(--gold)", "var(--teal)", "var(--pink)", "var(--cream)", "var(--teal)"];
+/** The train's carriages, behind the engine: each carries one thing Kupéen is about, on a sign of its own colour. */
+export const CARRIAGES = [
+  { word: "Kultur", colour: "var(--teal)" },
+  { word: "Musik", colour: "var(--pink)" },
+  { word: "Standup", colour: "var(--sky)" },
+  { word: "Krea", colour: "var(--gold)" },
+  { word: "Hygge", colour: "var(--lilac)" },
+  { word: "Øl og vin", colour: "var(--cream)" },
+  { word: "Te og kaffe", colour: "var(--teal)" },
+];
 
 export const VOLUNTEER_TEXT =
   "Alt i Kupéen sker, fordi nogen har lyst: frivillige fra Skørping og omegn står i baren, booker bands, rigger lyden til, bager kage og rydder op bagefter. Kupéen er af, med og for nærområdet – og alle andre er lige så velkomne.";
@@ -38,34 +49,42 @@ export const IDEAS_TEXT =
   "Har du en god idé til en aktivitet, et event eller noget, du gerne vil dele med fællesskabet? Vi er altid åbne for input og hjælper gerne med at få dine idéer ud i livet.";
 
 export const ABOUT_TEXT =
-  "Kupéen er mere end bare et café-lignende sted. Udover et varieret udvalg af drikkevarer, tilbyder Kupéen en lang række aktiviteter, der appellerer til både musikelskere, kreative sjæle og brætspilsfanatikere. Åbn en dør:";
+  "Kupéen er mere end bare et café-lignende sted. Udover et varieret udvalg af drikkevarer, tilbyder Kupéen en lang række aktiviteter, der appellerer til både musikelskere, kreative sjæle og brætspilsfanatikere. Vælg en kupé, så kører toget den frem til perronen:";
 
-/** »Vælg din kupé«: what Kupéen offers, one compartment each. */
+/**
+ * »Vælg din kupé«: what Kupéen offers, one carriage each. `short` stands on the carriage's sign, `title` and `text` in
+ * the box below when that carriage is at the platform.
+ */
 export const OFFERS = [
   {
+    short: "Vinyl",
     title: "Vinylplader",
     text: "Køb eller lyt til din yndlingsmusik på klassiske vinylplader. Kupéen sætter fokus på den nostalgiske lyd og den unikke atmosfære, som kun vinyl kan give.",
-    colour: "var(--tomato)",
+    colour: "var(--sky)",
   },
   {
+    short: "Krea",
     title: "Kreative aktiviteter",
     text: "Er du til DIY-projekter eller ønsker at udfolde din kreative side, så er Kupéen det perfekte sted. Der er jævnligt workshops og aktiviteter, hvor du kan lave alt fra maleri til håndarbejde og meget mere.",
     colour: "var(--gold)",
   },
   {
+    short: "Brætspil",
     title: "Brætspilscafé",
     text: "Kupéen er også hjem for en hyggelig brætspilscafé, hvor du kan udfordre vennerne eller møde nye mennesker til en omgang spil. Der er spil for alle smag og aldre, og stemningen er altid uformel og sjov.",
     colour: "var(--pink)",
   },
   {
+    short: "Musik",
     title: "Musik og koncerter",
     text: "Kupéen byder også på live musik og koncerter, hvor vi har særlig fokus på at skabe platform for lokale talenter, hvilket giver stedet en ekstra energi og en mulighed for at opleve nye musikgenrer.",
-    colour: "var(--cream)",
+    colour: "var(--teal)",
   },
   {
+    short: "Bingo & stand-up",
     title: "Musikbingo, stand-up, højskolesange og alt muligt andet",
     text: "For dem der elsker lidt sjov og fællesskab, er musikbingo og fællessang en fast del af Kupéens tilbud. Her kan man både få rørt lattermusklerne og synge sammen med andre – en oplevelse, der styrker fællesskabet.",
-    colour: "var(--gold)",
+    colour: "var(--lilac)",
   },
 ];
 
