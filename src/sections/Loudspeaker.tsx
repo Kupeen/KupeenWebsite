@@ -32,7 +32,7 @@ export function Loudspeaker({ news, onNews, onOpen }: { news: NewsItem[]; onNews
                     onOpen(item.id);
                   }}
                 >
-                  Ding-dong! {item.date} · {item.title} ·
+                  {item.date} · {item.title} ·
                 </a>
               )),
             )}
