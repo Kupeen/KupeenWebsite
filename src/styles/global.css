@@ -683,6 +683,21 @@ html {
     min-height: calc(100vh - var(--header-height, 86px));
     min-height: calc(100svh - var(--header-height, 86px));
   }
+
+  /* A gentle snap: when scrolling stops close to the start of a section, the page settles there (just below the
+     header, through scroll-padding-top). `proximity`, not `mandatory`: away from a start nothing pulls, so the long
+     sections scroll freely. The footer's end is a snap point too, so the very bottom of the page stays reachable. */
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  main > section {
+    scroll-snap-align: start;
+  }
+
+  .site-footer {
+    scroll-snap-align: end;
+  }
 }
 
 /* ---- Aktiviteter: the departure board, the month buttons and the ticket ---- */
