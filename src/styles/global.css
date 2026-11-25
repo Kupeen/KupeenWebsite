@@ -684,6 +684,13 @@ html {
     min-height: calc(100svh - var(--header-height, 86px));
   }
 
+  /* A full-width section (the photos) holds its content in an inner .wrap. In a column its `margin: 0 auto` would
+     shrink it to its content and centre it, pushing the heading right; full width keeps it in line with the others. */
+  main > section:not(.welcome) > .wrap {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
   /* A gentle snap: when scrolling stops close to the start of a section, the page settles there (just below the
      header, through scroll-padding-top). `proximity`, not `mandatory`: away from a start nothing pulls, so the long
      sections scroll freely. The footer's end is a snap point too, so the very bottom of the page stays reachable. */
@@ -1445,12 +1452,9 @@ a.photo-button {
 
 /* ---- Billeder: »Udsigt fra kupéen« ---- */
 
+/* On the page's own dark ground like the other sections; sky blue is its colour (number, heading, buttons). */
 .photos {
-  margin-top: 72px;
-  padding-top: 52px;
-  background: var(--sky);
-  color: var(--ink);
-  border-top: 6px solid var(--ink);
+  padding-top: 64px;
 }
 
 .photos-head {
@@ -1474,27 +1478,29 @@ a.photo-button {
   gap: 8px;
   min-height: 48px;
   padding: 0 20px;
-  border: 3px solid var(--ink);
+  border: 3px solid var(--sky);
   border-radius: 10px;
   background: transparent;
-  color: var(--ink);
+  color: var(--sky);
   font: 700 15px/1 var(--mono);
   cursor: pointer;
 }
 
 .photos-buttons button.dark {
-  background: var(--ink);
-  color: var(--sky);
+  background: var(--sky);
+  color: var(--ink);
 }
 
 .photos .lead {
   margin-bottom: 30px;
 }
 
+/* The train window band the photos glide past: tomato with dark text, on the dark page. */
 .view {
   padding: 28px 0 26px;
   overflow: hidden;
   background: var(--tomato);
+  color: var(--ink);
   border-top: 6px solid var(--ink);
 }
 
